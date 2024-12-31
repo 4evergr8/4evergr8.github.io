@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片对比色生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #imagePreview {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .colorBox {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<h1>图片对比色生成器</h1>
+<input type="file" id="uploadImage" accept="image/*">
+<img id="imagePreview" src="" alt="预览图像">
+
+<h2>主要颜色和对比颜色</h2>
+<div id="colors"></div>
+
+<script>
+    document.getElementById('uploadImage').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.onload = function() {
+            generateContrastColor(img);
+        };
+    });
+
+    function generateContrastColor(image) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0);
+
+        // 获取图像数据
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        let r = 0, g = 0, b = 0;
+        const pixelCount = (data.length / 4);
+
+        // 计算平均颜色
+        for (let i = 0; i < data.length; i += 4) {
+            r += data[i];     // 红色分量
+            g += data[i + 1]; // 绿色分量
+            b += data[i + 2]; // 蓝色分量
+        }
+
+        r = Math.floor(r / pixelCount);
+        g = Math.floor(g / pixelCount);
+        b = Math.floor(b / pixelCount);
+
+        const primaryColor = `rgb(${r}, ${g}, ${b})`;
+        const contrastColor = getContrastColor(r, g, b);
+
+        displayColors(primaryColor, contrastColor);
+    }
+
+    function getContrastColor(r, g, b) {
+        // 使用公式计算对比色（获取反色）
+        return `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+    }
+
+    function displayColors(primary, contrast) {
+        const colorsDiv = document.getElementById('colors');
+        colorsDiv.innerHTML = ''; // 清空之前的内容
+
+        const primaryBox = document.createElement('div');
+        primaryBox.className = 'colorBox';
+        primaryBox.style.backgroundColor = primary;
+        colorsDiv.appendChild(primaryBox);
+
+        const contrastBox = document.createElement('div');
+        contrastBox.className = 'colorBox';
+        contrastBox.style.backgroundColor = contrast;
+        colorsDiv.appendChild(contrastBox);
+    }
+</script>
+
+</body>
+</html>

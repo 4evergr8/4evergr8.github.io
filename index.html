@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="icon" href="/resources/icon.png" type="image/png">
+    <link rel="shortcut icon" href="/resources/icon.png" type="image/png">
+    <meta name="apple-touch-icon" content="/resources/icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用工具合集</title>
+    <style>
+        body {
+            background-size: cover;
+            background-image: url('https://bing.img.run/rand_1366x768.php');
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 水平居中 */
+            justify-content: center; /* 垂直居中 */
+            height: 100vh; /* 视口高度 */
+            margin: 0; /* 去掉默认的边距 */
+            font-family: Arial, sans-serif; /* 设置字体 */
+        }
+        .content {
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+            border-radius: 10px; /* 圆角 */
+            padding: 20px; /* 内边距 */
+            display: flex;
+            flex-direction: column;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            text-align: center; /* 文本居中 */
+            max-width: 350px; /* 最大宽度 */
+            width: 90%; /* 宽度为视口的90% */
+        }
+        h1 {
+            margin-bottom: 20px; /* 标题与其他内容之间的间距 */
+        }
+        p {
+            margin: 5px 0; /* 段落上下间距 */
+        }
+    </style>
+    <script>
+
+
+
+        async function stunTest() {
+            const configuration = {
+                iceServers: [{urls: 'stun:stun.l.google.com:19302'}] // 使用 Google 的公共 STUN 服务器
+            };
+
+            const pc = new RTCPeerConnection(configuration);
+            const ipAddresses = new Set();
+
+            pc.onicecandidate = (event) => {
+                if (event.candidate) {
+                    const candidate = event.candidate.candidate;
+                    const match = candidate.match(/([0-9]{1,3}\.){3}[0-9]{1,3}/);
+                    if (match) {
+                        ipAddresses.add(match[0]);
+                    }
+                }
+            };
+
+            // 创建数据通道以便触发 ICE 候选者事件
+            pc.createDataChannel("test");
+
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+
+            // 等待一段时间以收集 ICE 候选者
+            setTimeout(() => {
+                displayResults(ipAddresses);
+                console.log(ipAddresses)
+                pc.close(); // 关闭连接
+            }, 1000);
+        }
+
+        function displayResults(ipAddresses) {
+            const resultsDiv = document.getElementById('results');
+
+            if (ipAddresses.size > 0) {
+                ipAddresses.forEach(ip => {
+                    document.getElementById('leakip').innerText = '真实IP: ' + ip;
+                });
+            } else {
+                resultsDiv.innerText = '未检测到 IP 地址';
+            }
+        }
+
+
+
+        function getIp() {
+            fetch('https://qifu-api.baidubce.com/ip/local/geo/v1/district?ip=myip', {
+                method: 'GET',
+                headers: {
+                    // 如果需要认证，请在这里添加Authorization头
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code === "Success") {
+                        const ip = data.ip;
+                        const city = data.data.city;
+                        const district = data.data.district;
+                        const isp = data.data.isp;
+                        const zipcode = data.data.zipcode;
+
+                        document.getElementById('testip').innerText = '当前IP: ' + ip;
+                        document.getElementById('location').innerText = `IP位置: ${data.data.prov}, ${city}, ${district}`;
+                        document.getElementById('isp').innerText = '运营商: ' + isp;
+                        document.getElementById('zipcode').innerText = '邮政编码: ' + zipcode;
+                    } else {
+                        document.getElementById('ip').innerText = '无法获取 IP 地址';
+                    }
+                })
+                .catch(error => {
+                    console.error('获取 IP 地址时出错:', error);
+                });
+        }
+
+
+
+        // 在页面加载时调用函数
+        window.onload = async function() {
+            getIp(); // 获取 IP 地址等信息
+            await stunTest();
+
+        };
+
+
+
+
+    </script>
+</head>
+<body>
+
+<div class="content">
+    <h1>常用工具合集</h1>
+    <p id="testip">正在获取您的测试 IP 地址...</p>
+    <p id="leakip">正在获取您的泄露 IP 地址...</p>
+    <p id="location">正在获取您的位置...</p>
+    <p id="isp">正在获取运营商信息...</p>
+    <p id="zipcode">正在获取邮政编码...</p>
+
+    <a href="/tools/webrtc.html">IP泄露测试</a>
+    <a href="/tools/base64.html">Base64解码</a>
+    <a href="/tools/beast.html">兽音译者</a>
+    <a href="/tools/AV&BV.html">AVBV转换</a>
+    <a href="/tools/mirror.html">🚫照镜子🚫</a>
+    <a href="http://hi.pcmoe.net/index.html">与熊论道</a>
+    <a href="http://hi.pcmoe.net/buddha.html">佛曰解密</a>
+    <a href="https://test-ipv6.csclub.uwaterloo.ca/index.html.zh_CN">IPv6测试</a>
+    <h3><a href="https://github.com/Joshhshh/joshhshh.github.io">网站源代码</a></h3>
+
+
+</div>
+
+</body>
+</html>

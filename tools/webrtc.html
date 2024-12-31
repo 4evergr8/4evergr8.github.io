@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP泄露测试</title>
+    <style>
+        body {
+            background-size: cover;
+            background-image: url('https://bing.img.run/rand_1366x768.php');
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 水平居中 */
+            justify-content: center; /* 垂直居中 */
+            height: 100vh; /* 视口高度 */
+            margin: 0; /* 去掉默认的边距 */
+            font-family: Arial, sans-serif; /* 设置字体 */
+        }
+
+        .content {
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+            border-radius: 10px; /* 圆角 */
+            padding: 20px; /* 内边距 */
+            display: flex;
+            flex-direction: column;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            text-align: center; /* 文本居中 */
+            max-width: 600px; /* 最大宽度 */
+            width: 90%; /* 宽度为视口的90% */
+        }
+
+        h1 {
+            margin-bottom: 20px; /* 标题与其他内容之间的间距 */
+        }
+
+        p {
+            margin: 5px 0; /* 段落上下间距 */
+        }
+
+        #ip-results {
+            width: 100%;
+            text-align: center; /* 内容居中 */
+        }
+    </style>
+    <script>
+
+        async function stunTest(stunAddress) {
+            if (!stunAddress) {
+                stunAddress = document.getElementById("urlInput").value
+            }
+            const configuration = {
+                iceServers: [{urls: `stun:${stunAddress}`}] // 使用 Google 的公共 STUN 服务器
+            };
+
+            const pc = new RTCPeerConnection(configuration);
+            const ipAddresses = new Set();
+
+            pc.onicecandidate = (event) => {
+                if (event.candidate) {
+                    const candidate = event.candidate.candidate;
+                    const match = candidate.match(/([0-9]{1,3}\.){3}[0-9]{1,3}/);
+                    if (match) {
+                        ipAddresses.add(match[0]);
+                    }
+                }
+            };
+
+            // 创建数据通道以便触发 ICE 候选者事件
+            pc.createDataChannel("test");
+
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+
+            // 等待一段时间以收集 ICE 候选者
+            setTimeout(() => {
+                displayResults(stunAddress, ipAddresses);
+                pc.close(); // 关闭连接
+            }, 1000);
+        }
+
+        function displayResults(url, ipAddresses) {
+            const resultsContainer = document.getElementById('ip-results');
+            const resultsDiv = document.getElementById('results');
+
+            if (ipAddresses.size > 0) {
+                ipAddresses.forEach(ip => {
+                    const p = document.createElement('p');
+                    p.innerText = `STUN地址：${url} IP地址: ${ip}`;
+                    resultsContainer.appendChild(p);
+                });
+            } else {
+                resultsContainer.innerText = `STUN地址：${url} 未检测到 IP 地址`;
+            }
+        }
+
+        // 在页面加载时调用函数
+        window.onload = async function () {
+            await stunTest('stun.l.google.com:19302');
+            await stunTest('stun1.l.google.com:19302');
+            await stunTest('stun2.l.google.com:19302');
+            await stunTest('stun3.l.google.com:19302');
+            await stunTest('stun4.l.google.com:19302');
+        };
+
+
+    </script>
+</head>
+<body>
+<div class="content">
+
+
+    <h1>IP泄露测试</h1>
+    <h2>WebRTC有时会泄露用户的IP</h2>
+    <div class="container">
+        <label for="urlInput">请输入STUN地址：</label>
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="stun.l.google.com:19302">
+            <button onclick="stunTest()">测试!</button>
+        </div>
+
+        <div class="params" id="paramsContainer"></div>
+
+        <div class="generate-button-container">
+            <button id="generateButton" style="display:none;" onclick="generateUrl()">生成新的 URL</button>
+        </div>
+    </div>
+    <h3>测试结果</h3>
+    <div id="ip-results"></div> <!-- 确保存在该容器 -->
+    <a href="/index.html">回到主页</a>
+</div>
+</body>
+</html>

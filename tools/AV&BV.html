@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="icon" href="/resources/icon.png" type="image/png">
+    <link rel="shortcut icon" href="/resources/icon.png" type="image/png">
+    <meta name="apple-touch-icon" content="/resources/icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AV号BV号互转</title>
+    <style>
+        body {
+            background-size: cover;
+            background-image: url('https://bing.img.run/rand_1366x768.php');
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 水平居中 */
+            justify-content: center; /* 垂直居中 */
+            height: 100vh; /* 视口高度 */
+            margin: 0; /* 去掉默认的边距 */
+            font-family: Arial, sans-serif; /* 设置字体 */
+        }
+
+        .content {
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+            border-radius: 10px; /* 圆角 */
+            padding: 20px; /* 内边距 */
+            display: flex;
+            flex-direction: column;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            text-align: center; /* 文本居中 */
+            max-width: 500px; /* 最大宽度 */
+            width: 90%; /* 宽度为视口的90% */
+        }
+
+        .container {
+            text-align: center; /* 文字居中 */
+        }
+
+        .input-group {
+            display: flex; /* 水平排列输入框和按钮 */
+            justify-content: center; /* 水平居中对齐 */
+            margin: 10px 0; /* 上下间距 */
+        }
+
+        input {
+            padding: 10px; /* 输入框内边距 */
+            width: 300px; /* 输入框宽度 */
+            margin-right: 10px; /* 输入框和按钮之间的间距 */
+        }
+
+        button {
+            padding: 10px 20px; /* 按钮内边距 */
+            cursor: pointer; /* 鼠标悬停时显示手型 */
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+
+
+    <div class="container">
+        <h1>AV号BV号互转</h1>
+        <!-- 解码部分 -->
+        <label for="AVInput">请输入AV号：</label>
+        <div class="input-group">
+            <input type="text" id="AVInput" placeholder="882584971">
+            <button onclick="convertToBV()">转BV并复制</button>
+        </div>
+        <!-- 编码部分 -->
+        <label for="BVInput">请输入BV号：</label>
+        <div class="input-group">
+            <input type="text" id="BVInput" placeholder="BV1mK4y1C7Bz">
+            <button onclick="convertToAV()">转AV并复制</button>
+        </div>
+
+
+    </div>
+    <a href="/index.html">回到主页</a>
+
+
+</div>
+<script>
+
+    function convertToBV() {
+        try {
+            let x = document.getElementById("AVInput").value;
+            x = (x ^ xor) + add;
+            let r = ['B', 'V', '1', ' ', ' ', '4', ' ', '1', ' ', '7', ' ', ' '];
+            for (let i = 0; i < 6; i++) {
+                r[s[i]] = table[Math.floor(x / Math.pow(58, i)) % 58];
+            }
+            document.getElementById("BVInput").value = r.join('');
+            copyToClipboard(r.join(''));
+            return r.join('');
+        } catch (e) {
+            document.getElementById("BVInput").value = "无效的AV号";
+        }
+    }
+
+    // JavaScript 函数：将 Base64 编码转换为原始文本
+    function convertToAV() {
+        try {
+            let x = document.getElementById("BVInput").value;
+            let r = 0;
+            for (let i = 0; i < 6; i++) {
+                r += tr[x[s[i]]] * Math.pow(58, i);
+            }
+            document.getElementById("AVInput").value = (r - add) ^ xor;
+            copyToClipboard((r - add) ^ xor);
+            return (r - add) ^ xor;
+        } catch (e) {
+            document.getElementById("AVInput").value = "无效的BV号";
+        }
+    }
+
+    // JavaScript 函数：将内容复制到剪贴板
+    function copyToClipboard(text) {
+        var textarea = document.createElement("textarea");
+        textarea.value = text; // 将要复制的文本赋值给 textarea
+        document.body.appendChild(textarea); // 添加 textarea 到文档中
+        textarea.select(); // 选中 textarea 中的文本
+        document.execCommand("copy"); // 执行复制命令
+        document.body.removeChild(textarea); // 从文档中移除 textarea
+    }
+
+    const table = 'fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF';
+    const tr = {};
+    for (let i = 0; i < 58; i++) {
+        tr[table[i]] = i;
+    }
+    const s = [11, 10, 3, 8, 4, 6];
+    const xor = 177451812;
+    const add = 8728348608;
+
+
+</script>
+
+</body>
+</html>
