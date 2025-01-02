@@ -47,6 +47,23 @@
 
 </head>
 <body>
+<script>
+    function getRandomImage() {
+        var totalImages = 52; // 假设有10张图片（001.jpg到010.jpg）
+        var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
+        var imagePath = '/resources/jpgs/' + (randomIndex < 10 ? '00' : '0') + randomIndex + '.jpg'; // 拼接路径
+        document.getElementById('randomImage').src = imagePath; // 设置图片源
+    }
+
+
+
+    // 在页面加载时调用函数
+    window.onload = async function() {
+        getRandomImage()
+
+
+    };
+</script>
 
 <div class="content">
     <h1>文件分享页面</h1>
@@ -65,6 +82,7 @@
     <a href="http://hi.pcmoe.net/buddha.html">佛曰解密</a>
     <a href="https://test-ipv6.csclub.uwaterloo.ca/index.html.zh_CN">IPv6测试</a>
     <h3><a href="https://github.com/Joshhshh/joshhshh.github.io">网站源代码</a></h3>
+    <img id="randomImage" src="" alt="随机图片">
 
 
 </div>
