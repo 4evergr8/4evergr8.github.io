@@ -247,7 +247,7 @@ class Body {
   }}
 
 
-
+console.clear();
 
 const sim = new Simulation(document.querySelector('canvas'));
 sim.dimensions = new Vector(window.innerWidth, window.innerHeight);
@@ -286,3 +286,4 @@ for (i = 0; i < 100; i++) {
 
 }
 
+sim.running = true;
