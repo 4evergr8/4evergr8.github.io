@@ -80,6 +80,7 @@
             <input type="text" id="encodeInput" placeholder="你好">
             <button onclick="convertToBase64()">编码并复制</button>
         </div>
+        <img id="randomImage" src="" alt="随机图片">
 
 
     </div>
@@ -147,6 +148,21 @@
         document.execCommand("copy"); // 执行复制命令
         document.body.removeChild(textarea); // 从文档中移除 textarea
     }
+    function getRandomImage() {
+        var totalImages = 52; // 假设有10张图片（001.jpg到010.jpg）
+        var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
+        var imagePath = '/resources/jpgs/' + (randomIndex < 10 ? '00' : '0') + randomIndex + '.jpg'; // 拼接路径
+        document.getElementById('randomImage').src = imagePath; // 设置图片源
+    }
+
+
+
+    // 在页面加载时调用函数
+    window.onload = async function() {
+        getRandomImage()
+
+
+    };
 </script>
 
 </body>
