@@ -89,6 +89,7 @@
             <button id="generateButton" style="display:none;" onclick="generateUrl()">生成新的 URL</button>
         </div>
     </div>
+    <img id="randomImage" src="" alt="随机图片">
     <a href="/index.html">回到主页</a>
 </div>
 
@@ -159,6 +160,21 @@
         document.execCommand("copy"); // 执行复制命令
         document.body.removeChild(textarea); // 从文档中移除 textarea
     }
+    function getRandomImage() {
+        var totalImages = 52; // 假设有10张图片（001.jpg到010.jpg）
+        var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
+        var imagePath = '/resources/jpgs/' + (randomIndex < 10 ? '00' : '0') + randomIndex + '.jpg'; // 拼接路径
+        document.getElementById('randomImage').src = imagePath; // 设置图片源
+    }
+
+
+
+    // 在页面加载时调用函数
+    window.onload = async function() {
+        getRandomImage()
+
+
+    };
 
 </script>
 
