@@ -19,6 +19,24 @@
             margin: 0; /* 去掉默认的边距 */
             font-family: Arial, sans-serif; /* 设置字体 */
         }
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            transform-style: preserve-3d;
+            perspective: 500px;
+            cursor: pointer;
+        }
+
+        #element {
+            margin: auto;
+            width: 250px;
+            height: 250px;
+            background: #000;
+            border-radius: 10px;
+            transform-style: preserve-3d;
+            transition: all .1s;
+        }
         .content {
             background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
             border-radius: 10px; /* 圆角 */
@@ -67,8 +85,34 @@
     <h3><a href="https://github.com/Joshhshh/joshhshh.github.io">网站源代码</a></h3>
     <img id="randomImage" src="" alt="随机图片">
 </div>
+<div id="element"></div>
 
 <script>
+    const multiple = 10;
+    const mouseOverContainer = document.getElementsByTagName("body")[0];
+    const element = document.getElementById("element");
+
+    function transformElement(x, y) {
+        let box = element.getBoundingClientRect();
+        const calcX = -(y - box.y - box.height / 2) / multiple;
+        const calcY = (x - box.x - box.width / 2) / multiple;
+        const percentage = parseInt((x - box.x) / box.width * 1000) / 10;
+
+        element.style.transform = "rotateX(" + calcX + "deg) " + "rotateY(" + calcY + "deg)";
+    }
+
+    mouseOverContainer.addEventListener("mousemove", (e) => {
+        window.requestAnimationFrame(function () {
+            transformElement(e.clientX, e.clientY);
+        });
+    });
+
+    mouseOverContainer.addEventListener("mouseleave", (e) => {
+        window.requestAnimationFrame(function () {
+            element.style.transform = "rotateX(0) rotateY(0)";
+        });
+    });
+
     function getRandomImage() {
         var totalImages = 268; // 假设有268张图片（001.jpg到268.jpg）
         var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
