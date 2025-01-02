@@ -139,12 +139,11 @@
     const xor = 177451812;
     const add = 8728348608;
     function getRandomImage() {
-        var totalImages = 52; // 假设有10张图片（001.jpg到010.jpg）
+        var totalImages = 268; // 假设有268张图片（001.jpg到268.jpg）
         var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
-        var imagePath = '/resources/jpgs/' + (randomIndex < 10 ? '00' : '0') + randomIndex + '.jpg'; // 拼接路径
+        var imagePath = '/resources/jpgs/' + randomIndex.toString().padStart(3, '0') + '.jpg'; // 使用 padStart 处理序号
         document.getElementById('randomImage').src = imagePath; // 设置图片源
     }
-
 
 
     // 在页面加载时调用函数
