@@ -1,14 +1,83 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+    <link rel="icon" href="/resources/icon.png" type="image/png">
+    <link rel="shortcut icon" href="/resources/icon.png" type="image/png">
+    <meta name="apple-touch-icon" content="/resources/icon.png">
     <meta charset="UTF-8">
-    <title>点击跳转示例</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用工具合集</title>
+    <style>
+        body {
+            background-size: cover;
+            background-image: url('https://bing.img.run/rand_1366x768.php');
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 水平居中 */
+            justify-content: center; /* 垂直居中 */
+            height: 100vh; /* 视口高度 */
+            margin: 0; /* 去掉默认的边距 */
+            font-family: Arial, sans-serif; /* 设置字体 */
+        }
+        .content {
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+            border-radius: 10px; /* 圆角 */
+            padding: 20px; /* 内边距 */
+            display: flex;
+            flex-direction: column;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            text-align: center; /* 文本居中 */
+            max-width: 350px; /* 最大宽度 */
+            width: 90%; /* 宽度为视口的90% */
+        }
+        h1 {
+            margin-bottom: 20px; /* 标题与其他内容之间的间距 */
+        }
+        p {
+            margin: 5px 0; /* 段落上下间距 */
+        }
+        img {
+            max-width: 100%; /* 图片最大宽度为100% */
+            border-radius: 10px; /* 图片圆角 */
+            margin-top: 20px; /* 图片与其他内容之间的间距 */
+        }
+    </style>
+
 </head>
 <body>
-<p>
-    你可以访问我们的
-    <a href="https://www.example.com" target="_blank">官方网站</a>
-    获取更多信息。
-</p>
+
+<div class="content">
+    <h1>常用工具合集</h1>
+    <p id="testip">正在获取您的测试 IP 地址...</p>
+    <p id="leakip">正在获取您的泄露 IP 地址...</p>
+    <p id="location">正在获取您的位置...</p>
+    <p id="isp">正在获取运营商信息...</p>
+    <p id="zipcode">正在获取邮政编码...</p>
+
+
+
+    <a href="/pages/webrtc.html">IP泄露测试</a>
+    <a href="/pages/base64.html">Base64解码</a>
+    <a href="/pages/beast.html">兽音译者</a>
+    <a href="/pages/AV&BV.html">AVBV转换</a>
+    <a href="/pages/files.html">文件分享</a>
+    <a href="/pages/games.html">在线游戏</a>
+    <a href="/pages/mirror.html">🚫照镜子🚫</a>
+    <h3><a href="https://github.com/Joshhshh/joshhshh.github.io">网站源代码</a></h3>
+    <img id="randomImage" src="" alt="随机图片">
+</div>
+
+<script>
+    function getRandomImage() {
+        var totalImages = 52; // 假设有10张图片（001.jpg到010.jpg）
+        var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
+        var imagePath = '/resources/jpgs/' + (randomIndex < 10 ? '00' : '0') + randomIndex + '.jpg'; // 拼接路径
+        document.getElementById('randomImage').src = imagePath; // 设置图片源
+    }
+
+    window.onload = getRandomImage; // 页面加载完成后调用函数
+</script>
+
 </body>
 </html>
