@@ -42,7 +42,7 @@
 
         input {
             padding: 10px; /* 输入框内边距 */
-            width: 300px; /* 输入框宽度 */
+            width: 250px; /* 输入框宽度 */
             margin-right: 10px; /* 输入框和按钮之间的间距 */
         }
 
@@ -61,6 +61,13 @@
             justify-content: center; /* 水平居中对齐 */
             margin-top: 20px; /* 与参数展示区域的间距 */
         }
+
+        img {
+            max-width: 60%; /* 图片最大宽度为100% */
+            border-radius: 10px; /* 图片圆角 */
+            margin-top: 20px; /* 图片与其他内容之间的间距 */
+            align-self: center;
+        }
     </style>
 </head>
 <body>
@@ -71,10 +78,10 @@
         <h1>URL 解码工具</h1>
         <!-- 输入 URL -->
         <label for="urlInput">请输入待解码的 URL：</label>
-        <div class="input-group">
-            <input type="text" id="urlInput" placeholder="https://www.example.com/page?param1=value1&param2=value2">
-            <button onclick="decodeUrl()">解码并显示参数</button>
-        </div>
+
+        <input type="text" id="urlInput" placeholder="https://www.example.com/page?param1=value1&param2=value2">
+        <button onclick="decodeUrl()">解码并显示参数</button>
+
 
         <div class="params" id="paramsContainer"></div>
 
