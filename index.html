@@ -37,6 +37,11 @@
         p {
             margin: 5px 0; /* 段落上下间距 */
         }
+        img {
+            max-width: 100%; /* 图片最大宽度为100% */
+            border-radius: 10px; /* 图片圆角 */
+            margin-top: 20px; /* 图片与其他内容之间的间距 */
+        }
     </style>
     <script>
 
@@ -116,11 +121,18 @@
                     console.error('获取 IP 地址时出错:', error);
                 });
         }
+        function getRandomImage() {
+            var totalImages = 52; // 假设有10张图片（001.jpg到010.jpg）
+            var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
+            var imagePath = '/resources/jpgs/' + (randomIndex < 10 ? '00' : '0') + randomIndex + '.jpg'; // 拼接路径
+            document.getElementById('randomImage').src = imagePath; // 设置图片源
+        }
 
 
 
         // 在页面加载时调用函数
         window.onload = async function() {
+            getRandomImage()
             getIp(); // 获取 IP 地址等信息
             await stunTest();
 
@@ -149,6 +161,7 @@
     <a href="/pages/games.html">在线游戏</a>
     <a href="/pages/mirror.html">🚫照镜子🚫</a>
     <h3><a href="https://github.com/Joshhshh/joshhshh.github.io">网站源代码</a></h3>
+    <img id="randomImage" src="" alt="随机图片">
 
 
 </div>
