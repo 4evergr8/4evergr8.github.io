@@ -29,11 +29,18 @@
         }
 
         #element {
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+            border-radius: 10px; /* 圆角 */
+            padding: 20px; /* 内边距 */
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            text-align: center; /* 文本居中 */
+            max-width: 350px; /* 最大宽度 */
+            width: 90%; /* 宽度为视口的90% */
+
+
             margin: auto;
-            width: 250px;
-            height: 250px;
-            background: #000;
-            border-radius: 10px;
             transform-style: preserve-3d;
             transition: all .1s;
         }
@@ -65,7 +72,7 @@
 </head>
 <body>
 
-<div class="content">
+<div id="element">
     <h1>常用工具合集</h1>
     <p id="testip">正在获取您的测试 IP 地址...</p>
     <p id="leakip">正在获取您的泄露 IP 地址...</p>
@@ -85,10 +92,10 @@
     <h3><a href="https://github.com/Joshhshh/joshhshh.github.io">网站源代码</a></h3>
     <img id="randomImage" src="" alt="随机图片">
 </div>
-<div id="element"></div>
+
 
 <script>
-    const multiple = 10;
+    const multiple = 50;
     const mouseOverContainer = document.getElementsByTagName("body")[0];
     const element = document.getElementById("element");
 
