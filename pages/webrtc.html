@@ -103,17 +103,8 @@
                 resultsContainer.innerText = `STUN地址：${url} 未检测到 IP 地址`;
             }
         }
-
-        function getRandomImage() {
-        var totalImages = 268; // 假设有268张图片（001.jpg到268.jpg）
-        var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
-        var imagePath = '/resources/jpgs/' + randomIndex.toString().padStart(3, '0') + '.jpg'; // 使用 padStart 处理序号
-        document.getElementById('randomImage').src = imagePath; // 设置图片源
-    }
-
         // 在页面加载时调用函数
         window.onload = async function () {
-            getRandomImage()
             await stunTest('stun.l.google.com:19302');
             await stunTest('stun1.l.google.com:19302');
             await stunTest('stun2.l.google.com:19302');
@@ -127,28 +118,65 @@
     </script>
 </head>
 <body>
-<div class="content">
 
 
-    <h1>IP泄露测试</h1>
-    <h2>WebRTC有时会泄露用户的IP</h2>
-    <div class="container">
-        <label for="urlInput">请输入STUN地址：</label>
-        <div class="input-group">
-            <input type="text" id="urlInput" placeholder="stun.l.google.com:19302">
-            <button onclick="stunTest()">测试!</button>
+
+
+
+
+
+<canvas></canvas>
+<script src='/resources/js/wtc-vector.js'></script>
+<script src="/resources/js/Gravity2.js"></script>
+<script src="/resources/js/randompics.js"></script>
+
+<div class="card-wrapper">
+    <div class="card">
+        <div class="card-back">
+
+
+
+            <h1>IP泄露测试</h1>
+            <h2>WebRTC有时会泄露用户的IP</h2>
+
+            <!-- 解码部分 -->
+
+            <div class="input-group">
+                <label for="urlInput">请输入STUN地址：</label>
+            </div>
+
+
+            <div class="input-group">
+                <input type="text" id="urlInput" placeholder="stun.l.google.com:19302">
+                <button onclick="stunTest()">测试!</button>
+            </div>
+            <h3>测试结果</h3>
+
+            <div id="ip-results"></div> <!-- 确保存在该容器 -->
+            <button onclick="location.href='/index.html'">回到主页</button>
+
+
         </div>
+        <div class="card-front">
+            <img id="randomImage" src="/resources/icon.png" alt="随机图片">
 
-        <div class="params" id="paramsContainer"></div>
 
-        <div class="generate-button-container">
-            <button id="generateButton" style="display:none;" onclick="generateUrl()">生成新的 URL</button>
+
         </div>
     </div>
-    <h3>测试结果</h3>
-    <div id="ip-results"></div> <!-- 确保存在该容器 -->
-    <img id="randomImage" src="" alt="随机图片">
-    <a href="/index.html">回到主页</a>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
