@@ -21,10 +21,21 @@ body {
 
 
 h1 {
+    font-size: 30px;
     text-align: center; /* 标题居中 */
-    color: #333; /* 字体颜色 */
+    color: black; /* 字体颜色 */
+    margin: 10px; /* 边距 */
 }
-
+h2 {
+    text-align: center; /* 标题居中 */
+    color: black; /* 字体颜色 */
+    margin: 10px; /* 边距 */
+}
+h3 {
+    text-align: center; /* 标题居中 */
+    color: black; /* 字体颜色 */
+    margin: 10px; /* 边距 */
+}
 .input-group {
     display: flex; /* 使用弹性布局 */
     justify-content: center; /* 居中对齐 */
@@ -33,7 +44,7 @@ h1 {
 
 label {
     font-size: 18px; /* 标签字体大小 */
-    margin: 10px; /* 标签右边距 */
+    margin: 10px; /* 边距 */
     align-self: center; /* 垂直居中 */
 }
 img {
