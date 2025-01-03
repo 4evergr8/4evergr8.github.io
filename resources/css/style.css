@@ -37,11 +37,15 @@ label {
     align-self: center; /* 垂直居中 */
 }
 img {
-    max-width: 90%; /* 图片最大宽度为100% */
+    width: 90%;        /* 图片宽度为100%，适应父元素宽度 */
+    height: auto;      /* 高度自动，保持比例 */
+    max-width: 90%;   /* 最大宽度为父元素宽度 */
+    max-height: 90%;   /* 最大高度为父元素高度的70% */
     border-radius: 10px; /* 图片圆角 */
-    margin-top: 20px; /* 图片与其他内容之间的间距 */
-    align-self: center;
+    margin-top: 20px;  /* 图片与其他内容之间的间距 */
+    align-self: center; /* 在flex布局中居中对齐 */
 }
+
 input[type="text"] {
     margin: 10px; /* 每个按钮周围有10px的间距 */
     padding: 10px; /* 内边距 */
@@ -94,6 +98,7 @@ canvas {
 
 
 .card-wrapper {
+    border-radius: 15px;
     width: 90%;
     max-width: 350px;
     position: absolute;
@@ -126,21 +131,24 @@ canvas {
     flex-direction: column;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
     text-align: center; /* 文本居中 */
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6));
+    background: linear-gradient(to right, rgba(50, 50, 50, 1), rgba(211, 211, 211, 1)); /* 更淡的黑到浅灰的渐变 */
+
     backface-visibility: hidden;
-    border-radius: inherit;
+    border-radius: 15px;
 }
 
 .card-front {
+    background: linear-gradient(to right, rgba(50, 50, 50, 1), rgba(211, 211, 211, 1)); /* 更淡的黑到浅灰的渐变 */
     position: absolute;
     height: 100%;
+    width: 100%;
     top: 0;
     left: 0;
     display: grid;
     place-items: center; /* 同时设置水平和垂直居中 */
     flex-direction: column;
     backface-visibility: hidden;
-    border-radius: inherit;
+    border-radius: 15px;
 }
 
 
