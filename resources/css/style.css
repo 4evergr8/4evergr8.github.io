@@ -1,64 +1,129 @@
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: black;
+    font-family: 'Montserrat', sans-serif;
+    background-color: black;
 }
 
-.card {
 
-  background-color: #fff;
-  transform-style: preserve-3d;
-  position: relative;
-  transition: transform 1s;
-  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
+h1 {
+    text-align: center; /* 标题居中 */
+    color: #333; /* 字体颜色 */
+}
+
+.input-group {
+    display: flex; /* 使用弹性布局 */
+    justify-content: center; /* 居中对齐 */
+    margin-bottom: 20px; /* 下边距 */
+}
+
+label {
+    font-size: 18px; /* 标签字体大小 */
+    margin-right: 10px; /* 标签右边距 */
+    align-self: center; /* 垂直居中 */
+}
+
+input[type="text"] {
+    margin: 10px; /* 每个按钮周围有10px的间距 */
+    padding: 10px; /* 内边距 */
+    border: 2px solid #007bff; /* 边框颜色 */
+    border-radius: 10px; /* 圆角 */
+    font-size: 16px; /* 字体大小 */
+    width: 100px; /* 输入框宽度 */
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
+}
+
+input[type="text"]:focus {
+    border-color: #0056b3; /* 聚焦时边框颜色 */
+    outline: none; /* 去掉默认的轮廓 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 聚焦时阴影 */
+}
+
+input[type="text"]:hover {
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* 悬停时阴影 */
+    transform: translateY(-2px); /* 悬停时上移 */
+}
+
+button {
+    margin: 10px; /* 每个按钮周围有10px的间距 */
+    padding: 10px 15px; /* 内边距 */
+    background-color: #007bff; /* 按钮背景色 */
+    color: white; /* 按钮字体颜色 */
+    border: none; /* 去掉边框 */
+    border-radius: 10px; /* 圆角 */
+    font-size: 16px; /* 字体大小 */
+    cursor: pointer; /* 鼠标指针样式 */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
+}
+
+button:hover {
+    background-color: #0056b3; /* 悬停时背景色 */
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* 悬停时阴影 */
+    transform: scale(1.1); /* 悬停时放大 */
+}
+
+canvas {
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    touch-action: none;
+    width: 100%;
+    z-index: -1; /* 确保canvas在所有内容后面 */
+}
+.card {
+    display: flex;
+    flex-direction: column;
+
+    background-color: #fff;
+    transform-style: preserve-3d;
+    position: relative;
+    transition: transform 1s;
+    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
 }
 
 .card-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  perspective: 1000px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    perspective: 1000px;
 }
 
 .card-wrapper:hover .card {
-  transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
-.card-back{
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: inherit;
-}
 
-.card-front{
-  display: flex;
-  flex-direction: column;
-  backface-visibility: hidden;
-  border-radius: inherit;
-}
 .card-back {
-  transform: rotateY(180deg);
-  display: flex;
-  background: linear-gradient(
-    100deg,
-    black 50%,
-    grey 0%
-  );
+    transform: rotateY(180deg);
+    display: flex;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6));
+
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: inherit;
 }
 
 .card-front {
+    display: flex;
+    flex-direction: column;
+    backface-visibility: hidden;
+    border-radius: inherit;
+}
 
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: grid;
-  place-items: center;
+
+.card-front {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    place-items: center;
 }
 
