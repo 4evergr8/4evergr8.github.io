@@ -138,7 +138,7 @@ canvas {
 }
 
 .card-front {
-    background: linear-gradient(to right, rgba(50, 50, 50, 1), rgba(211, 211, 211, 1)); /* 更淡的黑到浅灰的渐变 */
+    background: linear-gradient(to left, rgba(50, 50, 50, 1), rgba(211, 211, 211, 1)); /* 更淡的黑到浅灰的渐变 */
     position: absolute;
     height: 100%;
     width: 100%;
