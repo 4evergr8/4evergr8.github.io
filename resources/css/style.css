@@ -33,7 +33,7 @@ h1 {
 
 label {
     font-size: 18px; /* 标签字体大小 */
-    margin-right: 10px; /* 标签右边距 */
+    margin: 10px; /* 标签右边距 */
     align-self: center; /* 垂直居中 */
 }
 img {
