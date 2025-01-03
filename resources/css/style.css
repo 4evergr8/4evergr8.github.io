@@ -48,12 +48,9 @@ label {
     align-self: center; /* 垂直居中 */
 }
 img {
-    width: 90%;        /* 图片宽度为100%，适应父元素宽度 */
-    height: auto;      /* 高度自动，保持比例 */
-    max-width: 90%;   /* 最大宽度为父元素宽度 */
-    max-height: 90%;   /* 最大高度为父元素高度的70% */
+
+    max-width: 90%;
     border-radius: 10px; /* 图片圆角 */
-    margin-top: 20px;  /* 图片与其他内容之间的间距 */
     align-self: center; /* 在flex布局中居中对齐 */
 }
 
