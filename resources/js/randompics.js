@@ -4,4 +4,11 @@ function getRandomImage() {
     var imagePath = '/resources/jpgs/' + randomIndex.toString().padStart(3, '0') + '.jpg'; // 使用 padStart 处理序号
     document.getElementById('randomImage').src = imagePath; // 设置图片源
 }
-getRandomImage();
+
+
+// 在页面加载时调用函数
+window.onload = async function() {
+    getRandomImage()
+
+
+};
