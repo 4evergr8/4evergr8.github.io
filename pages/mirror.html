@@ -13,67 +13,62 @@
         video {
             width: 100%;
             height: auto; /* 自动调整高度以保持纵横比 */
-            max-width: 600px; /* 最大宽度 */
-            aspect-ratio: 3 / 4; /* 设置纵向4:3比例 */
-            border: 1px solid black;
-        }
-
-        body {
-            background-size: cover;
-            background-image: url('https://bing.img.run/rand_1366x768.php');
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 水平居中 */
-            justify-content: center; /* 垂直居中 */
-            height: 100vh; /* 视口高度 */
-            margin: 0; /* 去掉默认的边距 */
-            font-family: Arial, sans-serif; /* 设置字体 */
-        }
-
-        .content {
-            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+            max-width: 350px; /* 最大宽度 */
+            border: 2px solid #007bff; /* 边框颜色 */
             border-radius: 10px; /* 圆角 */
-            padding: 20px; /* 内边距 */
-            display: flex;
-            flex-direction: column;
+            aspect-ratio: 3 / 4; /* 设置纵向4:3比例 */
 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
-            text-align: center; /* 文本居中 */
-            max-width: 600px; /* 最大宽度 */
-            width: 90%; /* 宽度为视口的90% */
         }
 
 
-        input {
-            padding: 10px; /* 输入框内边距 */
-            width: 250px; /* 输入框宽度 */
-            margin-right: 10px; /* 输入框和按钮之间的间距 */
-        }
 
-        button {
-            padding: 10px 20px; /* 按钮内边距 */
-            cursor: pointer; /* 鼠标悬停时显示手型 */
-        }
-        img {
-            max-width: 60%; /* 图片最大宽度为100% */
-            border-radius: 10px; /* 图片圆角 */
-            margin-top: 20px; /* 图片与其他内容之间的间距 */
-            align-self: center;
-        }
     </style>
 </head>
 <body>
-<div class="content">
 
 
-    <h1>🚫照镜子🚫</h1>
-    <h3>这是托管在GitHubPages上的静态网站，并不会保存你的照片和视频</h3>
-    <video id="video" autoplay></video>
-    <button id="startButton">开始</button>
-    <button id="stopButton">停止</button>
-    <img id="randomImage" src="" alt="随机图片">
-    <a href="/index.html">回到主页</a>
+
+
+
+
+
+
+
+<canvas></canvas>
+<script src='/resources/js/wtc-vector.js'></script>
+<script src="/resources/js/Gravity2.js"></script>
+<script src="/resources/js/randompics.js"></script>
+
+<div class="card-wrapper">
+    <div class="card">
+        <div class="card-back">
+
+
+
+            <h1>照镜子</h1>
+            <h3>点击按钮会调用前置摄像头</h3>
+            <video id="video" autoplay></video>
+            <button id="startButton">开始</button>
+<!--            <button id="stopButton">停止</button>-->
+
+
+            <button onclick="location.href='/index.html'">回到主页</button>
+
+
+        </div>
+        <div class="card-front">
+            <img id="randomImage" src="/resources/icon.png" alt="随机图片">
+
+
+
+        </div>
+    </div>
 </div>
+
+
+
+
+
 <script>
     const videoElement = document.getElementById('video');
     const startButton = document.getElementById('startButton');
@@ -97,21 +92,7 @@
             videoElement.srcObject = null; // 清空 <video> 元素的媒体源
         }
     };
-    function getRandomImage() {
-        var totalImages = 268; // 假设有268张图片（001.jpg到268.jpg）
-        var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
-        var imagePath = '/resources/jpgs/' + randomIndex.toString().padStart(3, '0') + '.jpg'; // 使用 padStart 处理序号
-        document.getElementById('randomImage').src = imagePath; // 设置图片源
-    }
 
-
-
-    // 在页面加载时调用函数
-    window.onload = async function() {
-        getRandomImage()
-
-
-    };
 </script>
 </body>
 </html>
