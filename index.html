@@ -43,6 +43,15 @@
             margin-top: 20px; /* 图片与其他内容之间的间距 */
             align-self: center;
         }
+        canvas {
+            height: 100%;
+            left: 0;
+            position: fixed;
+            top: 0;
+            touch-action: none;
+            width: 100%;
+            z-index: -1; /* 确保canvas在所有内容后面 */
+        }
     </style>
     <script>
 
@@ -145,6 +154,9 @@
     </script>
 </head>
 <body>
+<canvas></canvas>
+<script src='resources/js/wtc-vector.js'></script>
+<script src="resources/js/Gravity2.js"></script>
 
 <div class="content">
     <h1>常用工具合集</h1>
