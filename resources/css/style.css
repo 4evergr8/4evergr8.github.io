@@ -1,10 +1,17 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+
+
+
 * {
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "ZCOOL KuaiLe", serif;
+
     background-color: black;
     background-size: cover;
     background-image: url('https://bing.img.run/rand_1366x768.php');
@@ -57,6 +64,7 @@ input[type="text"]:hover {
 }
 
 button {
+    font-family: "ZCOOL KuaiLe", serif;
     margin: 10px; /* 每个按钮周围有10px的间距 */
     padding: 10px 15px; /* 内边距 */
     background-color: #007bff; /* 按钮背景色 */
