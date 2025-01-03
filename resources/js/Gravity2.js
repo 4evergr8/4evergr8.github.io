@@ -246,10 +246,11 @@ class Body {
   }
 }
 
-console.clear();
+//console.clear();
 
 const sim = new Simulation(document.querySelector('canvas'));
 sim.dimensions = new Vector(window.innerWidth, window.innerHeight);
+console.log(sim.dimensions)
 window.addEventListener('resize', (e) => {
   sim.dimensions = new Vector(window.innerWidth, window.innerHeight);
 });
@@ -274,7 +275,7 @@ window.addEventListener('pointerup', (e) => {
 // sim.addBody(new Body(new Vector(0, 0), new Vector(0,0), -3, 50, true));
 // sim.addBody(new Body(new Vector(0, 500), new Vector(0,0), 1, 10, true));
 
-for(i=0;i<100;i++) {
+for(i=0;i<window.innerWidth * window.innerHeight * 0.00008;i++) {
   const r = new Vector(400 + Math.random() * 500, Math.random() * Math.PI * 2.);
   const p = new Vector(Math.cos(r.y) * r.x, Math.sin(r.y) * r.x);
   const a = new Vector(p.y, -p.x).normalise().scale(10.);
