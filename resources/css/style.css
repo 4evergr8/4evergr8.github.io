@@ -52,6 +52,7 @@ img {
     max-width: 90%;
     border-radius: 10px; /* 图片圆角 */
     align-self: center; /* 在flex布局中居中对齐 */
+    border: 2px solid grey; /* 边框颜色 */
 }
 
 input[type="text"] {
@@ -143,6 +144,7 @@ canvas {
 
     backface-visibility: hidden;
     border-radius: 15px;
+    border: 2px solid #007bff; /* 边框颜色 */
 }
 
 .card-front {
@@ -157,6 +159,7 @@ canvas {
     flex-direction: column;
     backface-visibility: hidden;
     border-radius: 15px;
+    border: 2px solid #007bff; /* 边框颜色 */
 }
 
 
