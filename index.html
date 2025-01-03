@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+    <link
+            href="https://fonts.googleapis.com/css?family=Montserrat"
+            rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="resources/css/style.css"/>
     <link rel="icon" href="/resources/icon.png" type="image/png">
     <link rel="shortcut icon" href="/resources/icon.png" type="image/png">
     <meta name="apple-touch-icon" content="/resources/icon.png">
@@ -158,25 +164,34 @@
 <script src='resources/js/wtc-vector.js'></script>
 <script src="resources/js/Gravity2.js"></script>
 
-<div class="content">
-    <h1>常用工具合集</h1>
-    <p id="testip">正在获取您的测试 IP 地址...</p>
-    <p id="leakip">正在获取您的泄露 IP 地址...</p>
-    <p id="location">正在获取您的位置...</p>
-    <p id="isp">正在获取运营商信息...</p>
-    <p id="zipcode">正在获取邮政编码...</p>
+<div class="card-wrapper">
+    <div class="card">
+        <div class="card-back">
+            <div class="content">
+                <h1>常用工具合集</h1>
+                <p id="testip">正在获取您的测试 IP 地址...</p>
+                <p id="leakip">正在获取您的泄露 IP 地址...</p>
+                <p id="location">正在获取您的位置...</p>
+                <p id="isp">正在获取运营商信息...</p>
+                <p id="zipcode">正在获取邮政编码...</p>
 
-    <a href="/pages/webrtc.html">IP泄露测试</a>
-    <a href="/pages/base64.html">Base64解码</a>
-    <a href="/pages/beast.html">兽音译者</a>
-    <a href="/pages/AV&BV.html">AVBV转换</a>
-    <a href="/pages/files.html">文件分享</a>
-    <a href="/pages/games.html">在线游戏</a>
-    <a href="/pages/mirror.html">🚫照镜子🚫</a>
-    <h3><a href="https://github.com/Joshhshh/joshhshh.github.io">网站源代码</a></h3>
-    <img id="randomImage" src="" alt="随机图片">
+                <a href="/pages/webrtc.html">IP泄露测试</a>
+                <a href="/pages/base64.html">Base64解码</a>
+                <a href="/pages/beast.html">兽音译者</a>
+                <a href="/pages/AV&BV.html">AVBV转换</a>
+                <a href="/pages/files.html">文件分享</a>
+                <a href="/pages/games.html">在线游戏</a>
+                <a href="/pages/mirror.html">🚫照镜子🚫</a>
+                <h3><a href="https://github.com/Joshhshh/joshhshh.github.io">网站源代码</a></h3>
 
 
+            </div>
+        </div>
+        <div class="card-front">
+            <img id="randomImage" src="" alt="随机图片">
+
+        </div>
+    </div>
 </div>
 
 </body>
