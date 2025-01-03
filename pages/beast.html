@@ -8,87 +8,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>兽音编码与解码工具</title>
-    <style>
-        body {
-            background-size: cover;
-            background-image: url('https://bing.img.run/rand_1366x768.php');
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 水平居中 */
-            justify-content: center; /* 垂直居中 */
-            height: 100vh; /* 视口高度 */
-            margin: 0; /* 去掉默认的边距 */
-            font-family: Arial, sans-serif; /* 设置字体 */
-        }
-
-        .content {
-            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
-            border-radius: 10px; /* 圆角 */
-            padding: 20px; /* 内边距 */
-            display: flex;
-            flex-direction: column;
-
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
-            text-align: center; /* 文本居中 */
-            max-width: 500px; /* 最大宽度 */
-            width: 90%; /* 宽度为视口的90% */
-        }
-
-        .container {
-            text-align: center; /* 文字居中 */
-        }
-
-        .input-group {
-            display: flex; /* 水平排列输入框和按钮 */
-            justify-content: center; /* 水平居中对齐 */
-            margin: 10px 0; /* 上下间距 */
-        }
-
-        input {
-            padding: 10px; /* 输入框内边距 */
-            width: 250px; /* 输入框宽度 */
-            margin-right: 10px; /* 输入框和按钮之间的间距 */
-        }
-
-        button {
-            padding: 10px 20px; /* 按钮内边距 */
-            cursor: pointer; /* 鼠标悬停时显示手型 */
-        }
-        img {
-            max-width: 60%; /* 图片最大宽度为100% */
-            border-radius: 10px; /* 图片圆角 */
-            margin-top: 20px; /* 图片与其他内容之间的间距 */
-            align-self: center;
-        }
-    </style>
 </head>
 <body>
-<div class="content">
-    <div class="container">
-        <h1>兽音编码与解码</h1>
-        <!-- 解码部分 -->
-        <label for="decodeInput">请输入待解码内容：</label>
-        <div class="input-group">
-            <input type="text" id="decodeInput" placeholder="呜嗷嗷嗷啊嗷嗷~啊呜~啊~呜呜嗷">
-            <button onclick="convertFrom()">解码并复制</button>
-        </div>
-        <!-- 编码部分 -->
-        <label for="encodeInput">请输入待编码内容：</label>
-        <div class="input-group">
-            <input type="text" id="encodeInput" placeholder="你好">
-            <button onclick="convertTo()">编码并复制</button>
-        </div>
-        <label for="encodeInput">请输入密钥：</label>
-        <div class="input-group">
-            <input type="text" id="keyInput" placeholder="输入不重复的四个字符" value="嗷呜啊~">
-        </div>
 
+
+<canvas></canvas>
+<script src='/resources/js/wtc-vector.js'></script>
+<script src="/resources/js/Gravity2.js"></script>
+<script src="/resources/js/randompics.js"></script>
+
+<div class="card-wrapper">
+    <div class="card">
+        <div class="card-back">
+
+
+            <h1>兽音编码与解码</h1>
+            <!-- 解码部分 -->
+
+
+            <div class="input-group">
+                <label for="decodeInput">请输入待解码内容：</label>
+            </div>
+            <div class="input-group">
+
+                <input type="text" id="decodeInput" placeholder="呜嗷嗷嗷啊嗷嗷~啊呜~啊~呜呜嗷">
+                <button onclick="convertFrom()">解码并复制</button>
+            </div>
+
+            <!-- 编码部分 -->
+            <div class="input-group">
+                <label for="encodeInput">请输入待编码内容：</label>
+
+            </div>
+            <div class="input-group">
+                <input type="text" id="encodeInput" placeholder="你好">
+                <button onclick="convertTo()">编码并复制</button>
+            </div>
+            <div class="input-group">
+                <label for="encodeInput">请输入密钥：</label>
+            </div>
+            <div class="input-group">
+                <input type="text" id="keyInput" placeholder="输入不重复的四个字符" value="嗷呜啊~">
+            </div>
+            <button onclick="location.href='/index.html'">回到主页</button>
+
+
+        </div>
+        <div class="card-front">
+            <img id="randomImage" src="/resources/icon.png" alt="随机图片">
+
+
+        </div>
     </div>
-    <img id="randomImage" src="" alt="随机图片">
-    <a href="/index.html">回到主页</a>
-
-
 </div>
+
+
 <script>
     // JavaScript 函数：将输入内容转换为 Base64 编码
     function convertTo() {
@@ -194,21 +168,6 @@
         }
         return rawStr
     }
-    function getRandomImage() {
-        var totalImages = 268; // 假设有268张图片（001.jpg到268.jpg）
-        var randomIndex = Math.floor(Math.random() * totalImages) + 1; // 随机获取索引
-        var imagePath = '/resources/jpgs/' + randomIndex.toString().padStart(3, '0') + '.jpg'; // 使用 padStart 处理序号
-        document.getElementById('randomImage').src = imagePath; // 设置图片源
-    }
-
-
-
-    // 在页面加载时调用函数
-    window.onload = async function() {
-        getRandomImage()
-
-
-    };
 
 
 </script>
