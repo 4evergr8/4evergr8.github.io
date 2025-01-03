@@ -44,7 +44,7 @@ input[type="text"]:focus {
 
 input[type="text"]:hover {
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* 悬停时阴影 */
-    transform: translateY(-2px); /* 悬停时上移 */
+    transform: scale(1.1); /* 悬停时上移 */
 }
 
 button {
