@@ -2,8 +2,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
 
-
-
 * {
     margin: 0;
     padding: 0;
@@ -11,10 +9,7 @@
 
 body {
     font-family: "ZCOOL KuaiLe", serif;
-
     background-color: black;
-    background-size: cover;
-    background-image: url('https://bing.img.run/rand_1366x768.php');
     display: flex;
     flex-direction: column;
     align-items: center; /* 水平居中 */
@@ -41,7 +36,12 @@ label {
     margin-right: 10px; /* 标签右边距 */
     align-self: center; /* 垂直居中 */
 }
-
+img {
+    max-width: 90%; /* 图片最大宽度为100% */
+    border-radius: 10px; /* 图片圆角 */
+    margin-top: 20px; /* 图片与其他内容之间的间距 */
+    align-self: center;
+}
 input[type="text"] {
     margin: 10px; /* 每个按钮周围有10px的间距 */
     padding: 10px; /* 内边距 */
@@ -127,14 +127,12 @@ canvas {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
     text-align: center; /* 文本居中 */
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6));
-    width: 90%;
     backface-visibility: hidden;
     border-radius: inherit;
 }
 
 .card-front {
     position: absolute;
-    width: 100%;
     height: 100%;
     top: 0;
     left: 0;
