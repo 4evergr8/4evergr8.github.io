@@ -4,14 +4,17 @@ function getRandomImage() {
     var imagePath = '/resources/jpgs/' + randomIndex.toString().padStart(3, '0') + '.jpg'; // 使用 padStart 处理序号
     document.getElementById('randomImage').src = imagePath; // 设置图片源
 }
-async function fetchGitHubZen() {
+async function fetchRandomAdvice() {
     try {
-        const response = await fetch('https://api.github.com/zen');
+        const response = await fetch('https://api.adviceslip.com/advice');
         if (!response.ok) {
             throw new Error('Abnormal');
         }
-        const data = await response.text();
-        document.querySelector('.quote').textContent = data;
+        const data = await response.json();
+        const advice = data.slip.advice; // 建议内容
+
+        document.querySelector('.quote').textContent = advice;
+
     } catch (error) {
         console.error('Fail:', error);
         document.querySelector('.quote').textContent = 'Failed to fetch';
@@ -29,7 +32,7 @@ async function fetchGitHubZen() {
 
 window.addEventListener('load', async function() {
     await getRandomImage();
-    await fetchGitHubZen();
+    await fetchRandomAdvice();
 });
 
 
