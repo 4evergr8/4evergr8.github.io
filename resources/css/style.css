@@ -158,11 +158,11 @@ canvas {
     backface-visibility: hidden;
     border-radius: 15px;
     border: 2px solid #007bff; /* 边框颜色 */
-    
+
 }
 .quote{
     font-size: 30px;
-    font-family: "Playwrite AU SA", serif;
+    font-family: "Playwrite AU SA", "ZCOOL KuaiLe",serif;
     text-align: center; /* 标题居中 */
     color: black; /* 字体颜色 */
     margin: 10px; /* 边距 */
