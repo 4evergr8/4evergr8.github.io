@@ -95,12 +95,13 @@
         }
 
 
-        // 在页面加载时调用函数
-        window.onload = async function () {
+
+        window.addEventListener('load', async function() {
             getIp(); // 获取 IP 地址等信息
             await stunTest();
 
-        };
+        });
+
 
 
     </script>
@@ -137,6 +138,10 @@
         </div>
         <div class="card-front">
             <img id="randomImage" src="/resources/icon.png" alt="随机图片">
+            <div class="quote">Loading...</div>
+
+
+
 
 
 
