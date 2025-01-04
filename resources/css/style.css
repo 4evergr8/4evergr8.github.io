@@ -38,14 +38,8 @@ h3 {
     color: black; /* 字体颜色 */
     margin: 10px; /* 边距 */
 }
-.quote{
-    font-size: 30px;
-    font-family: "Playwrite AU SA", serif;
-    text-align: center; /* 标题居中 */
-    color: black; /* 字体颜色 */
-    margin: 10px; /* 边距 */
 
-}
+
 .input-group {
     display: flex; /* 使用弹性布局 */
     justify-content: center; /* 居中对齐 */
@@ -57,13 +51,7 @@ label {
     margin: 10px; /* 边距 */
     align-self: center; /* 垂直居中 */
 }
-img {
 
-    max-width: 70%;
-    border-radius: 10px; /* 图片圆角 */
-    align-self: center; /* 在flex布局中居中对齐 */
-    border: 2px solid grey; /* 边框颜色 */
-}
 
 input[type="text"] {
     margin: 10px; /* 每个按钮周围有10px的间距 */
@@ -170,8 +158,21 @@ canvas {
     backface-visibility: hidden;
     border-radius: 15px;
     border: 2px solid #007bff; /* 边框颜色 */
-
+    
 }
-
+.quote{
+    font-size: 30px;
+    font-family: "Playwrite AU SA", serif;
+    text-align: center; /* 标题居中 */
+    color: black; /* 字体颜色 */
+    margin: 10px; /* 边距 */
+}
+img {
+    margin: 10px; /* 边距 */
+    max-width: 60%;
+    border-radius: 10px; /* 图片圆角 */
+    align-self: center; /* 在flex布局中居中对齐 */
+    border: 2px solid grey; /* 边框颜色 */
+}
 
 
