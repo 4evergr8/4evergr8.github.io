@@ -1,10 +1,12 @@
 
 
-@import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+AU+SA:wght@100..400&family=ZCOOL+KuaiLe&display=swap');
+
 
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box; /* 使宽度和高度计算包括内边距 */
 }
 
 body {
@@ -36,6 +38,14 @@ h3 {
     color: black; /* 字体颜色 */
     margin: 10px; /* 边距 */
 }
+.quote{
+    font-size: 30px;
+    font-family: "Playwrite AU SA", serif;
+    text-align: center; /* 标题居中 */
+    color: black; /* 字体颜色 */
+    margin: 10px; /* 边距 */
+
+}
 .input-group {
     display: flex; /* 使用弹性布局 */
     justify-content: center; /* 居中对齐 */
@@ -49,7 +59,7 @@ label {
 }
 img {
 
-    max-width: 90%;
+    max-width: 70%;
     border-radius: 10px; /* 图片圆角 */
     align-self: center; /* 在flex布局中居中对齐 */
     border: 2px solid grey; /* 边框颜色 */
@@ -160,6 +170,7 @@ canvas {
     backface-visibility: hidden;
     border-radius: 15px;
     border: 2px solid #007bff; /* 边框颜色 */
+
 }
 
 
