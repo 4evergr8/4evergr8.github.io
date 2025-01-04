@@ -161,6 +161,8 @@ canvas {
 
 }
 .quote{
+
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* X轴偏移，Y轴偏移，模糊半径，阴影颜色 */
     font-size: 30px;
     font-family: "Playwrite AU SA", "ZCOOL KuaiLe",serif;
     text-align: center; /* 标题居中 */
@@ -168,8 +170,8 @@ canvas {
     margin: 10px; /* 边距 */
 }
 img {
-    margin: 10px; /* 边距 */
-    max-width: 60%;
+    margin-top: 10px; /* 边距 */
+    max-width: 50%;
     border-radius: 10px; /* 图片圆角 */
     align-self: center; /* 在flex布局中居中对齐 */
     border: 2px solid grey; /* 边框颜色 */
