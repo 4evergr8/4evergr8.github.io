@@ -60,13 +60,13 @@
             }
         }
         // 在页面加载时调用函数
-        window.onload = async function () {
+        window.addEventListener('load', async function() {
             await stunTest('stun.l.google.com:19302');
             await stunTest('stun1.l.google.com:19302');
             await stunTest('stun2.l.google.com:19302');
             await stunTest('stun3.l.google.com:19302');
             await stunTest('stun4.l.google.com:19302');
-        };
+        })
 
 
 
@@ -115,6 +115,7 @@
         </div>
         <div class="card-front">
             <img id="randomImage" src="/resources/icon.png" alt="随机图片">
+            <div class="quote">Loading...</div>
 
 
 
