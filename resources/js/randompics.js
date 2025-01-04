@@ -4,11 +4,32 @@ function getRandomImage() {
     var imagePath = '/resources/jpgs/' + randomIndex.toString().padStart(3, '0') + '.jpg'; // 使用 padStart 处理序号
     document.getElementById('randomImage').src = imagePath; // 设置图片源
 }
+async function fetchGitHubZen() {
+    try {
+        const response = await fetch('https://api.github.com/zen');
+        if (!response.ok) {
+            throw new Error('Abnormal');
+        }
+        const data = await response.text();
+        document.querySelector('.quote').textContent = data;
+    } catch (error) {
+        console.error('Fail:', error);
+        document.querySelector('.quote').textContent = 'Failed to fetch';
+    }
+}
 
 
-// 在页面加载时调用函数
-window.onload = async function() {
-    getRandomImage()
 
 
-};
+
+
+
+
+
+
+window.addEventListener('load', async function() {
+    await getRandomImage();
+    await fetchGitHubZen();
+});
+
+
