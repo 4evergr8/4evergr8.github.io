@@ -76,13 +76,15 @@
                 .then(data => {
                     if (data.code === "Success") {
                         const ip = data.ip;
+                        const country = data.country;
+                        const prov = data.prov;
                         const city = data.data.city;
                         const district = data.data.district;
                         const isp = data.data.isp;
                         const zipcode = data.data.zipcode;
 
                         document.getElementById('testip').innerText = '当前IP: ' + ip;
-                        document.getElementById('location').innerText = `IP位置: ${data.data.prov}, ${city}, ${district}`;
+                        document.getElementById('location').innerText = `IP位置: ${city}, ${prov}, ${city}, ${district}`;
                         document.getElementById('isp').innerText = '运营商: ' + isp;
                         document.getElementById('zipcode').innerText = '邮政编码: ' + zipcode;
                     } else {
