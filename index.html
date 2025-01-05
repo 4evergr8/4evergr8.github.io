@@ -76,8 +76,8 @@
                 .then(data => {
                     if (data.code === "Success") {
                         const ip = data.ip;
-                        const country = data.country;
-                        const prov = data.prov;
+                        const country = data.data.country;
+                        const prov = data.data.prov;
                         const city = data.data.city;
                         const district = data.data.district;
                         const isp = data.data.isp;
