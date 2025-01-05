@@ -84,9 +84,25 @@
                         const zipcode = data.data.zipcode;
 
                         document.getElementById('testip').innerText = '测试IP: ' + ip;
-                        document.getElementById('location').innerText = `位置: ${city} ${prov} ${city} ${district}`;
-                        document.getElementById('isp').innerText = '运营商: ' + isp;
-                        document.getElementById('zipcode').innerText = '邮政编码: ' + zipcode;
+                        if (country !== "" || prov !== "" || city !== "" || district !== "") {
+                            // 执行相应的操作
+                            document.getElementById('location').innerText = `位置: ${country} ${prov} ${city} ${district}`;
+                        } else {
+                            document.getElementById('location').innerText = `位置: 未知`;
+                        }
+                        if (isp !== "") {
+                            // 执行相应的操作
+                            document.getElementById('isp').innerText = '运营商: ' + isp;
+                        } else {
+                            document.getElementById('isp').innerText = '运营商: 未知';
+                        }
+                        if (zipcode !== "") {
+                            // 执行相应的操作
+                            document.getElementById('zipcode').innerText = '邮政编码: ' + zipcode;
+                        } else {
+                            document.getElementById('zipcode').innerText = '邮政编码: 未知';
+                        }
+
                     } else {
                         document.getElementById('ip').innerText = '无法获取 IP 地址';
                     }
@@ -119,11 +135,11 @@
         <div class="card-back">
 
                 <h1>常用工具合集</h1>
-                <label id="testip">正在获取您的测试 IP 地址...</label>
-                <label id="leakip">正在获取您的真实 IP 地址...</label>
-                <label id="location">正在获取您的位置...</label>
-                <label id="isp">正在获取运营商信息...</label>
-                <label id="zipcode">正在获取邮政编码...</label>
+                <label id="leakip">真实IP: 正在获取.</label>
+                <label id="testip">测试IP: 正在获取</label>
+                <label id="location">位置: 正在获取</label>
+                <label id="isp">运营商: 正在获取</label>
+                <label id="zipcode">邮政编码: 正在获取.</label>
 
 
                 <button onclick="location.href='/pages/webrtc.html'" class="styled-button">IP泄露测试</button>
