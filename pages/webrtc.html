@@ -52,11 +52,11 @@
             if (ipAddresses.size > 0) {
                 ipAddresses.forEach(ip => {
                     const p = document.createElement('p');
-                    p.innerText = `STUN地址：${url} IP地址: ${ip}`;
+                    p.innerText = `STUN地址：${url}\nIP地址: ${ip}`;
                     resultsContainer.appendChild(p);
                 });
             } else {
-                resultsContainer.innerText = `STUN地址：${url} 未检测到 IP 地址`;
+                resultsContainer.innerText = `STUN地址：${url}\n未检测到 IP 地址`;
             }
         }
         // 在页面加载时调用函数
