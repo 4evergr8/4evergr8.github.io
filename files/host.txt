@@ -43,9 +43,7 @@
 127.0.0.1 vali.cp31.ott.cibntv.net
 127.0.0.1 h-adashx.ut.taobao.com
 127.0.0.1 a1.alibabausercontent.com
-#Outlook广告
-127.0.0.1 m.adnxs.com
-127.0.0.1 ib.adnxs-simple.com
+
 
 
 #以下为重定向内容
