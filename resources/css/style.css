@@ -107,7 +107,32 @@ button:hover {
     transform: scale(1.1); /* 悬停时放大 */
 }
 
+#GitHubIcon {
+    font-family: "Playwrite AU SA", "ZCOOL KuaiLe", serif;
+    position: fixed; /* 固定位置 */
+    bottom: 10px; /* 距离底部10px */
+    right: 10px; /* 距离右侧10px */
+    width: 30px; /* 设置宽度为30px */
+    height: 30px; /* 设置高度为30px */
+    margin: 0; /* 移除外边距 */
+    padding: 0; /* 移除内边距 */
+    background-color: #007bff; /* 按钮背景色 */
+    color: white; /* 按钮字体颜色 */
+    border: none; /* 去掉边框 */
+    border-radius: 50%; /* 设置为圆形 */
+    font-size: 16px; /* 字体大小 */
+    cursor: pointer; /* 鼠标指针样式 */
+    display: flex; /* 使用Flexbox居中内容 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
+}
 
+#GitHubIcon:hover {
+    background-color: #0056b3; /* 悬停时背景色 */
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* 悬停时阴影 */
+    transform: scale(1.1); /* 悬停时放大 */
+}
 
 
 .card-wrapper {
