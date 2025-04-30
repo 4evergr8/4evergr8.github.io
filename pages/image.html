@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="stylesheet" href="/resources/css/style.css"/>
+    <link rel="icon" href="/resources/icon.png" type="image/png">
+    <meta name="apple-touch-icon" content="/resources/icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多合一图片搜索</title>
+</head>
+<body>
+
+<div id="ambient"></div>
+<script src="/resources/js/bvambient.js"></script>
+<script src="/resources/js/randompics.js"></script>
+
+<div class="card-wrapper">
+    <div class="card">
+        <div class="card-back">
+            <h1>图片搜索</h1>
+
+            <!-- 图片链接输入框、粘贴按钮和确认按钮在同一行 -->
+            <div class="input-group" style="display: flex; align-items: center; gap: 10px;">
+                <input type="text" id="imageUrlInput" placeholder="https://example.com/image.jpg">
+                <button onclick="pasteFromClipboard()">粘贴</button>
+                <button onclick="generateButtons()">搜索</button>
+            </div>
+
+            <!-- Worker 地址输入框和上传按钮 -->
+            <div class="input-group">
+                <label for="workerUrlInput">图床：</label>
+                <input type="text" id="workerUrlInput" value="https://image.4evergr8.workers.dev">
+            </div>
+
+            <div class="input-group">
+                <input type="file" id="fileInput" accept="image/*" onchange="uploadImage(this)" class="btn">
+            </div>
+
+            <div id="buttonsContainer" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;"></div>
+
+            <button onclick="location.href='/index.html'">回到主页</button>
+        </div>
+        <div class="card-front">
+            <img id="randomImage" src="/resources/icon.png" alt="随机图片">
+            <div class="quote">Loading...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateButtons() {
+        const url = document.getElementById("imageUrlInput").value.trim();
+        const container = document.getElementById("buttonsContainer");
+        container.innerHTML = "";
+
+        if (!url) return;
+
+        const engines = [
+            ["Google", `https://www.google.com/searchbyimage?client=app&image_url=${url}`],
+            ["Google Lens", `https://lens.google.com/uploadbyurl?url=${url}`],
+            ["Yandex.eu", `https://yandex.eu/images/search?url=${url}&rpt=imageview`],
+            ["Yandex.ru", `https://yandex.ru/images/search?url=${url}&rpt=imageview`],
+            ["Bing", `https://www.bing.com/images/search?q=imgurl:${url}&view=detailv2&iss=sbi`],
+            ["TinEye", `https://tineye.com/search/?url=${url}`],
+            ["3DIQDB", `https://3d.iqdb.org/?url=${url}`],
+            ["IQDB", `https://iqdb.org/?url=${url}`],
+            ["SauceNAO", `https://saucenao.com/search.php?url=${url}`],
+            ["ascii2d", `https://ascii2d.net/search/url/${url}`],
+            ["WAIT", `https://trace.moe/?url=${url}`],
+            ["Trace.moe", `https://trace.moe/?url=${url}`]
+        ];
+
+        for (const [name, link] of engines) {
+            const button = document.createElement("button");
+            button.textContent = name;
+            button.onclick = () => window.open(link, "_blank");
+            container.appendChild(button);
+        }
+    }
+
+    async function pasteFromClipboard() {
+        try {
+            const text = await navigator.clipboard.readText();
+            document.getElementById("imageUrlInput").value = text;
+        } catch (err) {
+            alert("读取剪贴板失败，请检查权限或使用 HTTPS");
+        }
+    }
+
+    async function uploadImage(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const workerUrl = document.getElementById("workerUrlInput").value.trim();
+        if (!workerUrl) {
+            alert("请先填写 Worker 地址");
+            return;
+        }
+
+        const randomKey = generateRandomKey();
+        const timestamp = Date.now();
+        const key = `${randomKey}${timestamp}`;
+        const uploadUrl = `${workerUrl}/upload/${key}`;
+
+        const formData = new FormData();
+        formData.append("file", file, file.name);
+
+        try {
+            const response = await fetch(uploadUrl, {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(`上传失败: ${response.status} ${errText}`);
+            }
+
+            const imageUrl = `${workerUrl}/download/${key}`;
+            document.getElementById("imageUrlInput").value = imageUrl;
+            generateButtons();
+        } catch (err) {
+            alert("图片上传失败: " + err.message);
+        }
+    }
+
+    function generateRandomKey() {
+        const chars = 'abcdefghijklmnopqrstuvwxyz';
+        let result = '';
+        for (let i = 0; i < 5; i++) {
+            result += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return result;
+    }
+</script>
+
+<a href="https://github.com/4evergr8/4evergr8.github.io" target="_blank">
+    <img src="/resources/github-mark.png" alt="项目地址" id="GitHubIcon">
+</a>
+<a href="https://4evergr8.github.io" target="_blank">
+    <img src="/resources/icon.png" alt="项目地址" id="OwnIcon">
+</a>
+</body>
+</html>
