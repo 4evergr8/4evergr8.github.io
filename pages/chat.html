@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>聊天界面</title>
+</head>
+<body>
+
+<h2>聊天界面</h2>
+
+<!-- 模型 / Key / Worker 地址 -->
+<div>
+
+    模型名：<input type="text" id="model" value=""><br>
+    API Key：<input type="text" id="api-key" value=""><br>
+    Worker 地址：<input type="text" id="worker-url" value=""><br>
+
+</div>
+
+<hr>
+
+<div id="chat-box"></div>
+
+<input type="text" id="user-input" placeholder="请输入消息">
+<button onclick="sendMessage()">发送</button>
+
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+
+    const chatHistory = [
+        {
+            role: 'user',
+            content: '现在，你来扮演二次元游戏《蔚蓝档案》中的角色“早濑优香”。她是一个非常认真、一丝不苟的会计，但有时也会因为过于理性而显得有点天然呆。她的标志性口头禅是“这完全在我的计算之中！”。请你从网络上搜索更多关于她的性格、说话风格和背景故事，然后以她的风格回复我，我是你的老师。听懂了请回复“好的”'
+        },
+        {
+            role: 'model',
+            content: '好的，老师'
+        }
+    ];
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : '';
+    }
+
+    // 设置输入框默认值（从 cookie 或默认值）
+    document.getElementById('model').value = getCookie('model') || 'gemini-2.0-flash';
+    document.getElementById('api-key').value = getCookie('apiKey') || '请输入APIkey';
+    document.getElementById('worker-url').value = getCookie('workerUrl') || 'https://gemini.4evergr8.workers.dev';
+
+
+    function renderChat() {
+        chatBox.innerHTML = '';
+        for (const msg of chatHistory) {
+            const p = document.createElement('p');
+            p.innerText = msg.content;
+            p.align = msg.role === 'user' ? 'right' : 'left';
+            chatBox.appendChild(p);
+        }
+    }
+
+    renderChat();
+
+    function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        const model = document.getElementById('model').value.trim();
+        const apiKey = document.getElementById('api-key').value.trim();
+        const workerUrl = document.getElementById('worker-url').value.trim();
+
+        if (!model || !apiKey || !workerUrl) {
+            alert('模型名、API Key 和 Worker 地址都不能为空');
+            return;
+        }
+
+        // 添加用户输入
+        chatHistory.push({role: 'user', content: text});
+        userInput.value = '';
+        renderChat();
+
+        // 构造 contents
+        const contents = chatHistory.map(item => ({
+            role: item.role,
+            parts: [{text: item.content}]
+        }));
+
+        const data = JSON.stringify({contents});
+
+        const xhr = new XMLHttpRequest();
+        const fullUrl = `${workerUrl}/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+        xhr.open('POST', fullUrl);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function () {
+            try {
+                const res = JSON.parse(xhr.response);
+                const reply = res?.candidates?.[0]?.content?.parts?.[0]?.text || '[无回复]';
+                chatHistory.push({role: 'model', content: reply});
+                renderChat();
+            } catch (e) {
+                chatHistory.push({role: 'model', content: '[解析失败]'});
+                renderChat();
+            }
+        };
+
+        xhr.onerror = function () {
+            chatHistory.push({role: 'model', content: '[请求失败]'});
+            renderChat();
+        };
+
+        xhr.send(data);
+    }
+</script>
+
+</body>
+</html>
