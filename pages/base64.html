@@ -13,10 +13,6 @@
 <body>
 
 
-
-
-
-
 <div id="ambient"></div>
 <script src="/resources/js/bvambient.js"></script>
 
@@ -24,28 +20,22 @@
 <div class="card">
 
 
-
     <h1>Base64编码与解码</h1>
 
     <!-- 解码部分 -->
 
-    <div class="input-group">
-        <label for="decodeInput">请输入待解码内容：</label>
-    </div>
-    <div class="input-group">
+    <label for="decodeInput">请输入待解码内容：</label>
 
-        <input type="text" id="decodeInput" placeholder="5L2g5aW9">
-        <button onclick="convertFromBase64()">解码并复制</button>
-    </div>
 
-    <!-- 编码部分 -->
-    <div class="input-group">
-        <label for="encodeInput">请输入待编码内容：</label>
-    </div>
-    <div class="input-group">
-        <input type="text" id="encodeInput" placeholder="你好">
-        <button onclick="convertToBase64()">编码并复制</button>
-    </div>
+    <input type="text" id="decodeInput" placeholder="5L2g5aW9">
+    <button onclick="convertFromBase64()">解码并复制</button>
+
+
+    <label for="encodeInput">请输入待编码内容：</label>
+
+    <input type="text" id="encodeInput" placeholder="你好">
+    <button onclick="convertToBase64()">编码并复制</button>
+ 
     <button onclick="location.href='/index.html'">回到主页</button>
 
 
