@@ -12,41 +12,33 @@
 
 <div id="ambient"></div>
 <script src="/resources/js/bvambient.js"></script>
-<script src="/resources/js/randompics.js"></script>
 
-<div class="card-wrapper">
-    <div class="card">
-        <div class="card-back">
-            <h1>图片搜索</h1>
 
-            <!-- 图片链接输入框、粘贴按钮和确认按钮在同一行 -->
-            <div class="input-group" style="display: flex; align-items: center;">
-                <input type="text" id="imageUrlInput" placeholder="https://example.com/image.jpg">
-                <button onclick="pasteFromClipboard()">粘贴</button>
-                <button onclick="generateButtons()">搜索</button>
-            </div>
+<div class="card">
+    <h1>图片搜索</h1>
 
-            <!-- Worker 地址输入框和上传按钮 -->
-            <div class="input-group" style="display: flex; align-items: center;">
-                <label for="workerUrlInput">图床：</label>
-                <input type="text" id="workerUrlInput" value="https://image.4evergr8.workers.dev">
-            </div>
-
-            <div class="input-group">
-                <input type="file" id="fileInput" accept="image/*" onchange="uploadImage(this)">
-            </div>
-
-            <div id="buttonsContainer" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;"></div>
-            <h3>请确保具备国际网络访问能力</h3>
-
-            <button onclick="location.href='/index.html'">回到主页</button>
-
-        </div>
-        <div class="card-front">
-            <img id="randomImage" src="/resources/icon.png" alt="随机图片">
-            <div class="quote">Loading...</div>
-        </div>
+    <!-- 图片链接输入框、粘贴按钮和确认按钮在同一行 -->
+    <div class="input-group" style="display: flex; align-items: center;">
+        <input type="text" id="imageUrlInput" placeholder="https://example.com/image.jpg">
+        <button onclick="pasteFromClipboard()">粘贴</button>
+        <button onclick="generateButtons()">搜索</button>
     </div>
+
+    <!-- Worker 地址输入框和上传按钮 -->
+    <div class="input-group" style="display: flex; align-items: center;">
+        <label for="workerUrlInput">图床：</label>
+        <input type="text" id="workerUrlInput" value="https://image.4evergr8.workers.dev">
+    </div>
+
+    <div class="input-group">
+        <input type="file" id="fileInput" accept="image/*" onchange="uploadImage(this)">
+    </div>
+
+    <div id="buttonsContainer" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;"></div>
+    <h3>请确保具备国际网络访问能力</h3>
+
+    <button onclick="location.href='/index.html'">回到主页</button>
+
 </div>
 
 <script>
