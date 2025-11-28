@@ -158,35 +158,12 @@ button:hover {
     transform: scale(1.1); /* 悬停时放大 */
 }
 
-.card-wrapper {
-    border-radius: 15px;
-    width: 90%;
-    max-width: 350px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    perspective: 1000px;
-}
-
-.card-wrapper:hover .card {
-    transform: rotateY(180deg);
-}
 
 .card {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    transform-style: preserve-3d;
-    position: relative;
-    transition: transform 1s;
-    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.3);
-    border-radius: 15px;
-}
+    width: 90%;          /* 自适应屏幕 */
+    max-width: 350px;    /* 最大宽度 */
+    margin: 40px auto;   /* 居中 + 顶部留白 */
 
-.card-back {
-    transform: rotateY(180deg);
     padding: 20px; /* 内边距 */
     display: flex;
     flex-direction: column;
@@ -197,38 +174,6 @@ button:hover {
     backface-visibility: hidden;
     border-radius: 15px;
     border: 2px solid #007bff; /* 边框颜色 */
-}
-
-.card-front {
-    background: linear-gradient(to left, rgba(50, 50, 50, 1), rgba(211, 211, 211, 1)); /* 更淡的黑到浅灰的渐变 */
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    display: grid;
-    place-items: center; /* 同时设置水平和垂直居中 */
-    flex-direction: column;
-    backface-visibility: hidden;
-    border-radius: 15px;
-    border: 2px solid #007bff; /* 边框颜色 */
-
-}
-.quote{
-
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* X轴偏移，Y轴偏移，模糊半径，阴影颜色 */
-    font-size: 30px;
-    font-family: "Playwrite AU SA", "ZCOOL KuaiLe",serif;
-    text-align: center; /* 标题居中 */
-    color: black; /* 字体颜色 */
-    margin: 10px; /* 边距 */
-}
-img {
-    margin-top: 10px; /* 边距 */
-    max-width: 50%;
-    border-radius: 10px; /* 图片圆角 */
-    align-self: center; /* 在flex布局中居中对齐 */
-    border: 2px solid grey; /* 边框颜色 */
 }
 
 
