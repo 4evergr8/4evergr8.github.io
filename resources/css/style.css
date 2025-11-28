@@ -54,11 +54,7 @@ h3 {
 }
 
 
-.input-group {
-    display: flex; /* 使用弹性布局 */
-    justify-content: center; /* 居中对齐 */
-    margin-bottom: 20px; /* 下边距 */
-}
+
 
 label {
     font-size: 18px; /* 标签字体大小 */
@@ -68,20 +64,18 @@ label {
 
 
 input[type="text"] {
-    margin: 10px; /* 每个按钮周围有10px的间距 */
+    display: block;
+    margin: 10px auto; /* 每个按钮周围有10px的间距 */
     padding: 10px; /* 内边距 */
     border: 2px solid #007bff; /* 边框颜色 */
     border-radius: 10px; /* 圆角 */
     font-size: 16px; /* 字体大小 */
-    width: 100px; /* 输入框宽度 */
+    width: 75%;                /* 宽度为父容器的80% */
+
     transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
 }
 
-input[type="text"]:focus {
-    border-color: #0056b3; /* 聚焦时边框颜色 */
-    outline: none; /* 去掉默认的轮廓 */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 聚焦时阴影 */
-}
+
 
 input[type="text"]:hover {
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* 悬停时阴影 */
@@ -89,8 +83,9 @@ input[type="text"]:hover {
 }
 
 button {
+    display: block;
     font-family: "ZCOOL KuaiLe", serif;
-    margin: 10px; /* 每个按钮周围有10px的间距 */
+    margin: 10px auto; /* 每个按钮周围有10px的间距 */
     padding: 10px 15px; /* 内边距 */
     background-color: #007bff; /* 按钮背景色 */
     color: white; /* 按钮字体颜色 */
@@ -98,6 +93,7 @@ button {
     border-radius: 10px; /* 圆角 */
     font-size: 16px; /* 字体大小 */
     cursor: pointer; /* 鼠标指针样式 */
+    width: 45%;
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
 }
 
@@ -175,5 +171,51 @@ button:hover {
     border-radius: 15px;
     border: 2px solid #007bff; /* 边框颜色 */
 }
+/* 基础样式 */
+.select {
+    width: 220px;
+    padding: 10px 40px 10px 15px; /* 左右内边距留出箭头空间 */
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    color: #333;
+    appearance: none; /* 移除浏览器默认样式 */
+    cursor: pointer;
+    outline: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%227%22%20viewBox%3D%220%200%2010%207%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%200l5%207%205-7H0z%22%20fill%3D%22%23007bff%22/%3E%3C/svg%3E"); /* 下拉箭头 */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 7px;
+    /* 水平居中 */
+    display: block;
+    margin: 20px auto; /* 上下间距可调整 */
+}
 
 
+.select:hover {
+    border-color: #0056b3;
+}
+input[type="file"] {
+    width: 220px;
+    padding: 10px 40px 10px 15px; /* 左右内边距留出箭头空间 */
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    color: #333;
+    appearance: none; /* 移除浏览器默认样式 */
+    cursor: pointer;
+    outline: none;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 7px;
+    /* 水平居中 */
+    display: block;
+    margin: 20px auto; /* 上下间距可调整 */
+}
+
+
+input[type="file"]:hover {
+    border-color: #0056b3;
+}
