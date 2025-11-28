@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="stylesheet" href="/resources/css/style.css"/>
+    <link rel="icon" href="/resources/icon.png" type="image/png">
+    <meta name="apple-touch-icon" content="/resources/icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多合一图片搜索</title>
+</head>
+<body>
+
+<div id="ambient"></div>
+<script src="/resources/js/bvambient.js"></script>
+
+
+<div class="card">
+    <h1>RSS订阅生成</h1>
+
+
+    <label >Worker链接：</label>
+    <input type="text" id="workerUrlInput" value="https://rss.4evergr8.workers.dev">
+
+
+    <label for="site">目标网站：</label>
+    <select id="site" class="select">
+        <option value="">点击选择</option>
+        <option value="github">GitHub</option>
+        <option value="dlsite">DLsite</option>
+        <option value="kemono ">Kemono</option>
+        <option value="nhentai">nhentai</option>
+        <option value="javbus">JavBus</option>
+    </select>
+
+    <label >网站参数：</label>
+    <div>
+        <input type="text" id="content" value="">
+    </div>
+
+    <button>生成并复制</button>
+
+
+    <h3>请确保具备国际网络访问能力</h3>
+
+    <button onclick="location.href='/index.html'">回到主页</button>
+
+</div>
+
+<script>
+    // 默认参数映射
+    const defaultParams = {
+        github: "4evergr8/atoolbox",
+        dlsite: "RG51931",
+        kemono: "fanbox/user/3316400",
+        nhentai: "chinese fullcolor",
+        javbus: "vbt"
+    };
+
+    // 获取元素
+    const siteSelect = document.getElementById("site");
+    const contentInput = document.getElementById("content");
+    const workerInput = document.getElementById("workerUrlInput");
+    const copyButton = document.querySelector(".card button");
+
+    // 切换目标网站时自动填充默认参数
+    siteSelect.addEventListener("change", () => {
+        const selectedValue = siteSelect.value;
+        if (defaultParams[selectedValue]) {
+            contentInput.value = defaultParams[selectedValue];
+        } else {
+            contentInput.value = ""; // 如果没有选择
+        }
+    });
+
+    // 点击按钮生成 URL 并复制到剪贴板
+    copyButton.addEventListener("click", () => {
+        const workerUrl = workerInput.value.trim();
+        const site = siteSelect.value;
+        const param = contentInput.value.trim();
+
+        if (!workerUrl) {
+            alert("请填写 Worker 链接");
+            return;
+        }
+
+        if (!site) {
+            alert("请选择目标网站");
+            return;
+        }
+
+        const finalUrl = `${workerUrl}?${site}=${encodeURIComponent(param)}`;
+
+        // 复制到剪贴板
+        navigator.clipboard.writeText(finalUrl)
+            .then(() => {
+
+            })
+            .catch(err => {
+                alert("复制失败，请手动复制:\n" + finalUrl);
+                console.error(err);
+            });
+    });
+</script>
+
+
+<a href="https://github.com/4evergr8" target="_blank">
+    <img src="/resources/github-mark.png" alt="项目地址" id="GitHubIcon">
+</a>
+<a href="https://space.bilibili.com/3546816836537000" target="_blank">
+    <img src="/resources/icon.png" alt="项目地址" id="OwnIcon">
+</a>
+</body>
+</html>
