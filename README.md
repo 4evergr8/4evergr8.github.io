@@ -21,13 +21,4 @@ https://4evergr8.github.io**
 
 ---
 
-## 🖼️ Cloudflare Workers 图床说明
-
-本项目支持通过 CF Worker 实现一个轻量级图床服务，可用于：
-
-- 图片文件上传  
-- 获取图片 URL  
-
----
-
 
