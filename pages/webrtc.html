@@ -83,43 +83,32 @@
 
 <div id="ambient"></div>
 <script src="/resources/js/bvambient.js"></script>
-<script src="/resources/js/randompics.js"></script>
 
-<div class="card-wrapper">
-    <div class="card">
-        <div class="card-back">
+
+<div class="card">
 
 
 
-            <h1>IP泄露测试</h1>
-            <h2>WebRTC可能泄露真实IP</h2>
+    <h1>IP泄露测试</h1>
+    <h2>WebRTC可能泄露真实IP</h2>
 
-            <!-- 解码部分 -->
+    <!-- 解码部分 -->
 
-            <div class="input-group">
-                <label for="urlInput">请输入STUN地址：</label>
-            </div>
-
-
-            <div class="input-group">
-                <input type="text" id="urlInput" placeholder="stun.l.google.com:19302">
-                <button onclick="stunTest()">测试!</button>
-            </div>
-            <h3>测试结果</h3>
-
-            <div id="ip-results"></div> <!-- 确保存在该容器 -->
-            <button onclick="location.href='/index.html'">回到主页</button>
-
-
-        </div>
-        <div class="card-front">
-            <img id="randomImage" src="/resources/icon.png" alt="随机图片">
-            <div class="quote">Loading...</div>
-
-
-
-        </div>
+    <div class="input-group">
+        <label for="urlInput">请输入STUN地址：</label>
     </div>
+
+
+    <div class="input-group">
+        <input type="text" id="urlInput" placeholder="stun.l.google.com:19302">
+        <button onclick="stunTest()">测试!</button>
+    </div>
+    <h3>测试结果</h3>
+
+    <div id="ip-results"></div> <!-- 确保存在该容器 -->
+    <button onclick="location.href='/index.html'">回到主页</button>
+
+
 </div>
 
 
