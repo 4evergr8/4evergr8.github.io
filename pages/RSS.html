@@ -93,6 +93,8 @@
         // 复制到剪贴板
         navigator.clipboard.writeText(finalUrl)
             .then(() => {
+                window.open(finalUrl, "_blank");
+
 
             })
             .catch(err => {
