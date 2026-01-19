@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="stylesheet" href="/resources/css/style.css"/>
+    <link rel="icon" href="/resources/icon.png" type="image/png">
+    <meta name="apple-touch-icon" content="/resources/icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浏览器 OCR 识别</title>
+</head>
+<body>
+
+<div id="ambient"></div>
+<script src="/resources/js/bvambient.js"></script>
+
+<div class="card">
+    <h1>OCR 文字识别</h1>
+
+    <label>上传图片</label>
+    <input type="file" id="fileInput" accept="image/*">
+
+    <button onclick="pasteImage()">粘贴剪贴板图片</button>
+    <button onclick="runOCR()">开始识别</button>
+
+    <pre id="result" style="margin-top:20px; white-space: pre-wrap;"></pre>
+
+    <h3>首次加载模型较慢，请耐心等待</h3>
+
+    <button onclick="location.href='/index.html'">回到主页</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+    let pastedImage = null;
+
+    async function pasteImage() {
+        try {
+            const items = await navigator.clipboard.read();
+            for (const item of items) {
+                for (const type of item.types) {
+                    if (type.startsWith("image/")) {
+                        const blob = await item.getType(type);
+                        pastedImage = blob;
+                        document.getElementById("result").textContent = "已读取剪贴板图片";
+                        return;
+                    }
+                }
+            }
+            alert("剪贴板中没有图片");
+        } catch (e) {
+            alert("读取剪贴板失败，请使用 HTTPS 页面");
+        }
+    }
+
+    async function runOCR() {
+        const file = document.getElementById("fileInput").files[0];
+        const img = file || pastedImage;
+        if (!img) return;
+
+        document.getElementById("result").textContent = "识别中...";
+
+        const { data: { text } } = await Tesseract.recognize(
+            img,
+            "chi_sim+eng"
+        );
+
+        document.getElementById("result").textContent = text;
+    }
+</script>
+
+<a href="https://github.com/4evergr8" target="_blank">
+    <img src="/resources/github-mark.png" alt="项目地址" id="GitHubIcon">
+</a>
+<a href="https://space.bilibili.com/3546816836537000" target="_blank">
+    <img src="/resources/icon.png" alt="项目地址" id="OwnIcon">
+</a>
+
+</body>
+</html>
