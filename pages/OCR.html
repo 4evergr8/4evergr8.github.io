@@ -61,7 +61,7 @@
 
         const { data: { text } } = await Tesseract.recognize(
             img,
-            "chi_sim+eng"
+            "jpn+chi_sim+eng"
         );
 
         document.getElementById("result").textContent = text;
