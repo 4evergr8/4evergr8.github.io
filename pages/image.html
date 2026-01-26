@@ -144,7 +144,8 @@
                     if (type.startsWith("image/")) {
                         const blob = await item.getType(type);
                         const file = new File([blob], "clipboard.png", { type: blob.type });
-                        uploadImageFile(file);
+                        await uploadImage({files: [file]});
+
                         return;
                     }
                 }
