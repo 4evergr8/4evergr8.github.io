@@ -17,12 +17,15 @@
     <h1>OCR 文字识别</h1>
 
     <label>上传图片</label>
-    <input type="file" id="fileInput" accept="image/*">
+    <input type="file" id="fileInput" accept="image/*" onchange="runOCR()">
 
-    <button onclick="pasteImage()">粘贴剪贴板图片</button>
+
+    <button onclick="pasteImage()">剪贴板图片</button>
     <button onclick="runOCR()">开始识别</button>
 
     <pre id="result" style="margin-top:20px; white-space: pre-wrap;"></pre>
+    <button id="copyBtn" onclick="copyResult()" style="display:none;">复制结果</button>
+
 
     <h3>首次加载模型较慢，请耐心等待</h3>
 
@@ -32,6 +35,7 @@
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
     let pastedImage = null;
+    let ocrText = "";
 
     async function pasteImage() {
         try {
@@ -41,7 +45,7 @@
                     if (type.startsWith("image/")) {
                         const blob = await item.getType(type);
                         pastedImage = blob;
-                        document.getElementById("result").textContent = "已读取剪贴板图片";
+                        runOCR();
                         return;
                     }
                 }
@@ -58,15 +62,29 @@
         if (!img) return;
 
         document.getElementById("result").textContent = "识别中...";
+        document.getElementById("copyBtn").style.display = "none";
 
         const { data: { text } } = await Tesseract.recognize(
             img,
             "jpn+chi_sim+eng"
         );
 
-        document.getElementById("result").textContent = text;
+        ocrText = text.replace(/[\s\u3000]+/g, "");
+        document.getElementById("result").textContent = ocrText;
+
+        if (ocrText) {
+            document.getElementById("copyBtn").style.display = "inline-block";
+        }
+    }
+
+    async function copyResult() {
+        if (!ocrText) return;
+        await navigator.clipboard.writeText(ocrText);
     }
 </script>
+
+
+
 
 <a href="https://github.com/4evergr8" target="_blank">
     <img src="/resources/github-mark.png" alt="项目地址" id="GitHubIcon">
