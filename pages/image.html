@@ -20,8 +20,8 @@
     <!-- 图片链接输入框、粘贴按钮和确认按钮在同一行 -->
     <label>在线图片链接</label>
     <input type="text" id="imageUrlInput" placeholder="https://example.com/image.jpg">
-    <button onclick="pasteFromClipboard()">粘贴</button>
-    <button onclick="generateButtons()">搜索</button>
+    <button onclick="pasteAndSearch()">粘贴并搜索</button>
+
 
 
     <!-- Worker 地址输入框和上传按钮 -->
@@ -31,6 +31,8 @@
 
 
     <input type="file" id="fileInput" accept="image/*" onchange="uploadImage(this)">
+    <button onclick="pasteImageFromClipboard()">剪贴板图片</button>
+
 
     <div id="buttonsContainer" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;"></div>
     <h3>请确保具备国际网络访问能力</h3>
@@ -40,6 +42,16 @@
 </div>
 
 <script>
+    async function pasteAndSearch() {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (!text) return;
+            document.getElementById("imageUrlInput").value = text.trim();
+            generateButtons();
+        } catch (err) {
+            alert("读取剪贴板失败，请检查权限或使用 HTTPS");
+        }
+    }
     function generateButtons() {
         const url = document.getElementById("imageUrlInput").value.trim();
         const container = document.getElementById("buttonsContainer");
@@ -123,6 +135,24 @@
             result += chars[Math.floor(Math.random() * chars.length)];
         }
         return result;
+    }
+    async function pasteImageFromClipboard() {
+        try {
+            const items = await navigator.clipboard.read();
+            for (const item of items) {
+                for (const type of item.types) {
+                    if (type.startsWith("image/")) {
+                        const blob = await item.getType(type);
+                        const file = new File([blob], "clipboard.png", { type: blob.type });
+                        uploadImageFile(file);
+                        return;
+                    }
+                }
+            }
+            alert("剪贴板中没有图片");
+        } catch (e) {
+            alert("读取剪贴板失败，请使用 HTTPS 页面");
+        }
     }
 </script>
 
