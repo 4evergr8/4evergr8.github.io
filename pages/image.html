@@ -59,21 +59,20 @@
 
         if (!url) return;
 
+// 图片反向搜索引擎列表
         const engines = [
-            ["Google", `https://www.google.com/searchbyimage?client=app&image_url=${url}`],
             ["Google Lens", `https://lens.google.com/uploadbyurl?url=${url}`],
-            ["Yandex.eu", `https://yandex.eu/images/search?url=${url}&rpt=imageview`],
             ["Yandex.ru", `https://yandex.ru/images/search?url=${url}&rpt=imageview`],
-            ["Bing", `https://www.bing.com/images/search?q=imgurl:${url}&view=detailv2&iss=sbi`],
+            ["SauceNAO", `https://saucenao.com/search.php?url=${url}`],
+            ["Lenso.ai", `https://lenso.ai/en/search-by-url?url=${url}&utm_source=sbi`],
             ["TinEye", `https://tineye.com/search/?url=${url}`],
+            ["Google", `https://www.google.com/searchbyimage?client=app&image_url=${url}`],
             ["3DIQDB", `https://3d.iqdb.org/?url=${url}`],
             ["IQDB", `https://iqdb.org/?url=${url}`],
-            ["SauceNAO", `https://saucenao.com/search.php?url=${url}`],
             ["ascii2d", `https://ascii2d.net/search/url/${url}`],
             ["WAIT", `https://trace.moe/?url=${url}`],
             ["Trace.moe", `https://trace.moe/?url=${url}`]
         ];
-
         for (const [name, link] of engines) {
             const button = document.createElement("button");
             button.textContent = name;
