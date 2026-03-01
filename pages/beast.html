@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="stylesheet" href="/resources/css/style.css"/>
+    <link rel="icon" href="/resources/icon.png" type="image/png">
+    <link rel="shortcut icon" href="/resources/icon.png" type="image/png">
+    <meta name="apple-touch-icon" content="/resources/icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兽音译者</title>
+
+</head>
+<body>
+
+
+<div id="ambient"></div>
+<script src="/resources/js/bvambient.js"></script>
+
+
+<div class="card">
+
+    <h1>兽音译者</h1>
+    <label>密文：</label>
+    <input type="text" id="cipherInput" placeholder="请输入兽音密文">
+    <button onclick="decrypt()">解密并复制</button>
+
+
+    <label>字典（可选）：</label>
+    <input type="text" id="dictInput" placeholder="喵呜啊~">
+
+    <label>明文：</label>
+    <input type="text" id="plainInput" placeholder="请输入明文">
+    <button onclick="encrypt()">加密并复制</button>
+
+
+
+</div>
+
+<script>
+
+    class MeowTranslator {
+
+        constructor() {
+            this.charMap = ['喵','呜','啊','~'];
+        }
+
+        setCharMap(str) {
+            this.charMap = [str[0],str[1],str[2],str[3]];
+        }
+
+        setCharMapFromMeow(str) {
+            this.charMap[0] = str[2];
+            this.charMap[1] = str[1];
+            this.charMap[2] = str[str.length - 1];
+            this.charMap[3] = str[0];
+        }
+
+        getCharMapToMeow() {
+            return [
+                this.charMap[3],
+                this.charMap[1],
+                this.charMap[0],
+                this.charMap[2],
+            ];
+        }
+
+        strToHex(str) {
+            let hex = "";
+            for (let i = 0; i < str.length; i++) {
+                hex += ("0000" + str.charCodeAt(i).toString(16)).slice(-4);
+            }
+            return hex.toUpperCase();
+        }
+
+        hexToStr(hex) {
+            let str = "";
+            for (let i = 0; i < hex.length; i += 4) {
+                str += String.fromCharCode(parseInt(hex.substr(i,4),16));
+            }
+            return str;
+        }
+
+        hexToMeow(hex) {
+            let result = "";
+            for (let i = 0; i < hex.length; i++) {
+                let k = (parseInt(hex[i],16) + i % 16) % 16;
+                result += this.charMap[Math.floor(k/4)];
+                result += this.charMap[k%4];
+            }
+            return result;
+        }
+
+        meowToHex(meow) {
+            let hex = "";
+            for (let i = 0; i < meow.length; i += 2) {
+                let j = this.charMap.indexOf(meow[i]);
+                let k = this.charMap.indexOf(meow[i+1]);
+                let val = (j*4 + k - (i/2)%16 + 16) % 16;
+                hex += val.toString(16);
+            }
+            return hex.toUpperCase();
+        }
+
+        parseToMeow(strHuman) {
+            let hex = this.strToHex(strHuman);
+            let body = this.hexToMeow(hex);
+
+            let map = this.getCharMapToMeow();
+            return map[0] + map[1] + map[2] + body + map[3];
+        }
+
+        parseToHuman(strMeow) {
+            this.setCharMapFromMeow(strMeow);
+            let body = strMeow.substr(3, strMeow.length - 4);
+            let hex = this.meowToHex(body);
+            return this.hexToStr(hex);
+        }
+    }
+
+    function encrypt() {
+        let dict = document.getElementById("dictInput").value;
+        let text = document.getElementById("plainInput").value;
+
+        let translator = new MeowTranslator();
+
+        if (dict.length === 4) {
+            translator.setCharMap(dict);
+        }
+
+        try {
+            let result = translator.parseToMeow(text);
+            document.getElementById("cipherInput").value = result;
+            copyToClipboard(result);
+        } catch(e) {
+            document.getElementById("cipherInput").value = "加密失败";
+        }
+    }
+
+    function decrypt() {
+        let text = document.getElementById("cipherInput").value;
+        let translator = new MeowTranslator();
+
+        try {
+            text =extractCipher(text)
+            let result = translator.parseToHuman(text);
+            document.getElementById("plainInput").value = result;
+            copyToClipboard(result);
+        } catch(e) {
+            document.getElementById("plainInput").value = "解密失败";
+        }
+    }
+
+    function copyToClipboard(text) {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+    }
+    const raw = "米我的v旅途个人TV我~呜嗷呜呜嗷啊嗷呜~啊~嗷嗷啊啊嗷~嗷啊2431击败";
+
+    function tryDecode(candidate) {
+
+        if (candidate.length < 4) return false;
+
+        const bodyLength = candidate.length - 4;
+        if (bodyLength <= 0 || bodyLength % 2 !== 0) return false;
+
+        const unique = new Set(candidate);
+        if (unique.size !== 4) return false;
+
+        // 恢复字典
+        const charMap = [];
+        charMap[0] = candidate[2];
+        charMap[1] = candidate[1];
+        charMap[2] = candidate[candidate.length - 1];
+        charMap[3] = candidate[0];
+
+        const body = candidate.slice(3, -1);
+
+        let hex = "";
+
+        for (let i = 0; i < body.length; i += 2) {
+            const j = charMap.indexOf(body[i]);
+            const k = charMap.indexOf(body[i+1]);
+            if (j === -1 || k === -1) return false;
+
+            const val = (j * 4 + k - (i/2)%16 + 16) % 16;
+            hex += val.toString(16);
+        }
+
+        if (hex.length % 4 !== 0) return false;
+
+        return true;
+    }
+
+    function extractCipher(text) {
+
+        for (let start = 0; start < text.length; start++) {
+            for (let end = start + 4; end <= text.length; end++) {
+
+                const candidate = text.slice(start, end);
+
+                if (tryDecode(candidate)) {
+                    return candidate;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+</script>
+
+<a href="https://github.com/4evergr8" target="_blank">
+    <img src="/resources/github-mark.png" alt="项目地址" id="GitHubIcon">
+</a>
+
+<a href="https://space.bilibili.com/3546816836537000" target="_blank">
+    <img src="/resources/icon.png" alt="项目地址" id="OwnIcon">
+</a>
+</body>
+</html>
