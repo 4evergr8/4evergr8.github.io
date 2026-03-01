@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="stylesheet" href="/resources/css/style.css"/>
+    <link rel="icon" href="/resources/icon.png" type="image/png">
+    <link rel="shortcut icon" href="/resources/icon.png" type="image/png">
+    <meta name="apple-touch-icon" content="/resources/icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>等比数列首尾项计算</title>
+
+</head>
+<body>
+
+
+<div id="ambient"></div>
+<script src="/resources/js/bvambient.js"></script>
+
+<div class="card">
+
+    <h1>等比数列首尾项计算</h1>
+
+    <label for="a0Input">已知项数值：</label>
+    <input type="text" id="a0Input" placeholder="2000">
+
+    <label for="rateInput">增长百分比（例如1.5表示1.5%）：</label>
+    <input type="text" id="rateInput" placeholder="1.5">
+
+    <label for="countInput">总项数：</label>
+    <input type="text" id="countInput" placeholder="11">
+
+    <button onclick="calculate()">计算首尾项</button>
+
+    <label for="resultOutput">计算结果：</label>
+    <input type="text" id="resultOutput" readonly>
+
+    <button onclick="location.href='/index.html'">回到主页</button>
+
+</div>
+
+<script>
+    function calculate() {
+        var a0 = parseFloat(document.getElementById("a0Input").value);
+        var ratePercent = parseFloat(document.getElementById("rateInput").value);
+        var n = parseInt(document.getElementById("countInput").value);
+
+        if (isNaN(a0) || isNaN(ratePercent) || isNaN(n) || n <= 0) {
+            document.getElementById("resultOutput").value = "输入无效";
+            return;
+        }
+
+        var r = 1 + ratePercent / 100;
+
+        var centerIndex = Math.floor(n / 2);
+
+        var firstOffset = 0 - centerIndex;
+        var first = firstOffset >= 0
+            ? a0 * Math.pow(r, firstOffset)
+            : a0 / Math.pow(r, -firstOffset);
+
+        var lastOffset = (n - 1) - centerIndex;
+        var last = lastOffset >= 0
+            ? a0 * Math.pow(r, lastOffset)
+            : a0 / Math.pow(r, -lastOffset);
+
+        document.getElementById("resultOutput").value =
+            "首项: " + first.toFixed(6) + " | 末项: " + last.toFixed(6);
+    }
+</script>
+<a href="https://github.com/4evergr8" target="_blank">
+    <img src="/resources/github-mark.png" alt="项目地址" id="GitHubIcon">
+</a>
+
+<a href="https://space.bilibili.com/3546816836537000" target="_blank">
+    <img src="/resources/icon.png" alt="项目地址" id="OwnIcon">
+</a>
+</body>
+</html>
