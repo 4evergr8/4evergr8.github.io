@@ -142,6 +142,7 @@
 
         try {
             text =extractCipher(text)
+            console.log(text)
             let result = translator.parseToHuman(text);
             document.getElementById("plainInput").value = result;
             copyToClipboard(result);
@@ -158,7 +159,7 @@
         document.execCommand("copy");
         document.body.removeChild(textarea);
     }
-    const raw = "米我的v旅途个人TV我~呜嗷呜呜嗷啊嗷呜~啊~嗷嗷啊啊嗷~嗷啊2431击败";
+
 
     function tryDecode(candidate) {
 
