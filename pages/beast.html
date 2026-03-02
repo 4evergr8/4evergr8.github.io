@@ -141,8 +141,6 @@
         let translator = new MeowTranslator();
 
         try {
-            text =extractCipher(text)
-            console.log(text)
             let result = translator.parseToHuman(text);
             document.getElementById("plainInput").value = result;
             copyToClipboard(result);
@@ -196,21 +194,7 @@
         return true;
     }
 
-    function extractCipher(text) {
 
-        for (let start = 0; start < text.length; start++) {
-            for (let end = start + 4; end <= text.length; end++) {
-
-                const candidate = text.slice(start, end);
-
-                if (tryDecode(candidate)) {
-                    return candidate;
-                }
-            }
-        }
-
-        return null;
-    }
 
 
 
