@@ -7,42 +7,32 @@
     <meta name="apple-touch-icon" content="/resources/icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>等比数列双向计算</title>
+    <title>等比数列多项计算</title>
     <style>
-        /* 保持原风格，针对结果显示做分组优化 */
+        /* 保持原风格，仅对结果区域进行平铺优化 */
         #resultArea {
             margin-top: 15px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 10px;
-            font-size: 0.95em;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
             text-align: left;
-            color: #333;
         }
-        .res-section {
+        .res-group {
             margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(0,0,0,0.2);
         }
-        .res-title {
-            font-weight: bold;
-            color: #d32f2f; /* 红色系突出首项 */
-            border-left: 3px solid #d32f2f;
-            padding-left: 8px;
-            margin-bottom: 5px;
-        }
-        .res-title.last {
-            color: #1976d2; /* 蓝色系突出末项 */
-            border-left: 3px solid #1976d2;
-        }
-        .res-row {
+        .res-group:last-child { border-bottom: none; }
+        .res-title { font-weight: bold; font-size: 0.9em; margin-bottom: 5px; color: #333; }
+        .res-item {
             display: flex;
             justify-content: space-between;
-            padding: 2px 8px;
             font-family: monospace;
+            font-size: 1.05em;
+            line-height: 1.6;
         }
-        .res-label { color: #666; }
-        .res-val { font-weight: bold; }
+        .tag { color: #555; }
+        .val { color: #007AFF; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -52,21 +42,21 @@
 
 <div class="card">
 
-    <h1>等比数列双向计算</h1>
+    <h1>等比数列多项计算</h1>
 
     <label for="a0Input">中心项数值 (a₀)：</label>
-    <input type="text" id="a0Input" placeholder="2000" value="2000">
+    <input type="text" id="a0Input" value="104800">
 
     <label for="rateInput">增长百分比 (%)：</label>
-    <input type="text" id="rateInput" placeholder="0.75" value="0.75">
+    <input type="text" id="rateInput" value="0.75">
 
-    <label for="countInput">单边项数：</label>
-    <input type="text" id="countInput" placeholder="4" value="4">
+    <label for="countInput">项数 (n)：</label>
+    <input type="text" id="countInput" value="4">
 
-    <button onclick="calculate()">执行双向计算</button>
+    <button onclick="calculate()">执行计算</button>
 
     <div id="resultArea">
-        等待计算数据...
+        请输入数值并点击计算
     </div>
 
     <button onclick="location.href='/index.html'">回到主页</button>
@@ -77,42 +67,45 @@
     function calculate() {
         var a0 = parseFloat(document.getElementById("a0Input").value);
         var ratePercent = parseFloat(document.getElementById("rateInput").value);
-        var side = parseInt(document.getElementById("countInput").value);
+        var n = parseInt(document.getElementById("countInput").value);
         var resultArea = document.getElementById("resultArea");
 
-        if (isNaN(a0) || isNaN(ratePercent) || isNaN(side) || side < 0) {
+        if (isNaN(a0) || isNaN(ratePercent) || isNaN(n)) {
             resultArea.innerHTML = "输入无效";
             return;
         }
 
         var r = 1 + ratePercent / 100;
 
-        // 核心逻辑计算
-        var origFirst = a0 / Math.pow(r, side);      // 原始左端
-        var extFirst  = a0 / Math.pow(r, side + 1);  // 扩展左端
+        // 计算函数
+        function getV(x) {
+            return (a0 * Math.pow(r, x)).toFixed(4);
+        }
 
-        var origLast  = a0 * Math.pow(r, side);      // 原始右端
-        var extLast   = a0 * Math.pow(r, side + 1);  // 扩展右端
-
-        // 重新组织 HTML 结构：按“首”和“末”分组
+        // 构建 HTML
         var html = "";
 
-        // 第一组：首项 (减量端)
-        html += "<div class='res-section'>";
-        html += "  <div class='res-title'>首项结果 (减量端)</div>";
-        html += "  <div class='res-row'><span class='res-label'>原始 (±" + side + "):</span><span class='res-val'>" + origFirst.toFixed(6) + "</span></div>";
-        html += "  <div class='res-row'><span class='res-label'>扩展 (±" + (side + 1) + "):</span><span class='res-val'>" + extFirst.toFixed(6) + "</span></div>";
+        // 第一组：a-1, a(n-1), an
+        html += "<div class='res-group'>";
+        html += "<div class='res-title'>[ 第一组: 近端支撑与上行目标 ]</div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>-1</sub> (近底):</span><span class='val'>" + getV(-1) + "</span></div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>" + (n-1) + "</sub> (高位):</span><span class='val'>" + getV(n-1) + "</span></div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>" + n + "</sub> (止损):</span><span class='val'>" + getV(n) + "</span></div>";
         html += "</div>";
 
-        // 第二组：末项 (增量端)
-        html += "<div class='res-section' style='margin-bottom:0;'>";
-        html += "  <div class='res-title last'>末项结果 (增量端)</div>";
-        html += "  <div class='res-row'><span class='res-label'>原始 (±" + side + "):</span><span class='res-val'>" + origLast.toFixed(6) + "</span></div>";
-        html += "  <div class='res-row'><span class='res-label'>扩展 (±" + (side + 1) + "):</span><span class='res-val'>" + extLast.toFixed(6) + "</span></div>";
+        // 第二组：a-n, a-(n-1), a1
+        html += "<div class='res-group'>";
+        html += "<div class='res-title'>[ 第二组: 下行目标与近端压力 ]</div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>-" + n + "</sub> (止损):</span><span class='val'>" + getV(-n) + "</span></div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>-" + (n-1) + "</sub> (低位):</span><span class='val'>" + getV(-(n-1)) + "</span></div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>1</sub> (近顶):</span><span class='val'>" + getV(1) + "</span></div>";
         html += "</div>";
 
         resultArea.innerHTML = html;
     }
+
+    // 自动加载初始结果
+    window.onload = calculate;
 </script>
 
 <a href="https://github.com/4evergr8" target="_blank">
