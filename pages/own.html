@@ -7,32 +7,67 @@
     <meta name="apple-touch-icon" content="/resources/icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>等比数列首尾项计算</title>
-
+    <title>等比数列双向计算</title>
+    <style>
+        /* 保持原风格，针对结果显示做分组优化 */
+        #resultArea {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            font-size: 0.95em;
+            text-align: left;
+            color: #333;
+        }
+        .res-section {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        .res-title {
+            font-weight: bold;
+            color: #d32f2f; /* 红色系突出首项 */
+            border-left: 3px solid #d32f2f;
+            padding-left: 8px;
+            margin-bottom: 5px;
+        }
+        .res-title.last {
+            color: #1976d2; /* 蓝色系突出末项 */
+            border-left: 3px solid #1976d2;
+        }
+        .res-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 8px;
+            font-family: monospace;
+        }
+        .res-label { color: #666; }
+        .res-val { font-weight: bold; }
+    </style>
 </head>
 <body>
-
 
 <div id="ambient"></div>
 <script src="/resources/js/bvambient.js"></script>
 
 <div class="card">
 
-    <h1>等比数列首尾项计算</h1>
+    <h1>等比数列双向计算</h1>
 
-    <label for="a0Input">已知项数值：</label>
-    <input type="text" id="a0Input" placeholder="2000">
+    <label for="a0Input">中心项数值 (a₀)：</label>
+    <input type="text" id="a0Input" placeholder="2000" value="2000">
 
-    <label for="rateInput">增长百分比（例如1.5表示1.5%）：</label>
-    <input type="text" id="rateInput" placeholder="1.5">
+    <label for="rateInput">增长百分比 (%)：</label>
+    <input type="text" id="rateInput" placeholder="0.75" value="0.75">
 
-    <label for="countInput">总项数：</label>
-    <input type="text" id="countInput" placeholder="11">
+    <label for="countInput">单边项数：</label>
+    <input type="text" id="countInput" placeholder="4" value="4">
 
-    <button onclick="calculate()">计算首尾项</button>
+    <button onclick="calculate()">执行双向计算</button>
 
-    <label for="resultOutput">计算结果：</label>
-    <input type="text" id="resultOutput" readonly>
+    <div id="resultArea">
+        等待计算数据...
+    </div>
 
     <button onclick="location.href='/index.html'">回到主页</button>
 
@@ -42,31 +77,44 @@
     function calculate() {
         var a0 = parseFloat(document.getElementById("a0Input").value);
         var ratePercent = parseFloat(document.getElementById("rateInput").value);
-        var n = parseInt(document.getElementById("countInput").value);
+        var side = parseInt(document.getElementById("countInput").value);
+        var resultArea = document.getElementById("resultArea");
 
-        if (isNaN(a0) || isNaN(ratePercent) || isNaN(n) || n <= 0) {
-            document.getElementById("resultOutput").value = "输入无效";
+        if (isNaN(a0) || isNaN(ratePercent) || isNaN(side) || side < 0) {
+            resultArea.innerHTML = "输入无效";
             return;
         }
 
         var r = 1 + ratePercent / 100;
 
-        var centerIndex = Math.floor(n / 2);
+        // 核心逻辑计算
+        var origFirst = a0 / Math.pow(r, side);      // 原始左端
+        var extFirst  = a0 / Math.pow(r, side + 1);  // 扩展左端
 
-        var firstOffset = 0 - centerIndex;
-        var first = firstOffset >= 0
-            ? a0 * Math.pow(r, firstOffset)
-            : a0 / Math.pow(r, -firstOffset);
+        var origLast  = a0 * Math.pow(r, side);      // 原始右端
+        var extLast   = a0 * Math.pow(r, side + 1);  // 扩展右端
 
-        var lastOffset = (n - 1) - centerIndex;
-        var last = lastOffset >= 0
-            ? a0 * Math.pow(r, lastOffset)
-            : a0 / Math.pow(r, -lastOffset);
+        // 重新组织 HTML 结构：按“首”和“末”分组
+        var html = "";
 
-        document.getElementById("resultOutput").value =
-            "首项: " + first.toFixed(6) + " | 末项: " + last.toFixed(6);
+        // 第一组：首项 (减量端)
+        html += "<div class='res-section'>";
+        html += "  <div class='res-title'>首项结果 (减量端)</div>";
+        html += "  <div class='res-row'><span class='res-label'>原始 (±" + side + "):</span><span class='res-val'>" + origFirst.toFixed(6) + "</span></div>";
+        html += "  <div class='res-row'><span class='res-label'>扩展 (±" + (side + 1) + "):</span><span class='res-val'>" + extFirst.toFixed(6) + "</span></div>";
+        html += "</div>";
+
+        // 第二组：末项 (增量端)
+        html += "<div class='res-section' style='margin-bottom:0;'>";
+        html += "  <div class='res-title last'>末项结果 (增量端)</div>";
+        html += "  <div class='res-row'><span class='res-label'>原始 (±" + side + "):</span><span class='res-val'>" + origLast.toFixed(6) + "</span></div>";
+        html += "  <div class='res-row'><span class='res-label'>扩展 (±" + (side + 1) + "):</span><span class='res-val'>" + extLast.toFixed(6) + "</span></div>";
+        html += "</div>";
+
+        resultArea.innerHTML = html;
     }
 </script>
+
 <a href="https://github.com/4evergr8" target="_blank">
     <img src="/resources/github-mark.png" alt="项目地址" id="GitHubIcon">
 </a>
@@ -74,5 +122,6 @@
 <a href="https://space.bilibili.com/3546816836537000" target="_blank">
     <img src="/resources/icon.png" alt="项目地址" id="OwnIcon">
 </a>
+
 </body>
 </html>
