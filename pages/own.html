@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>等比数列多项计算</title>
     <style>
-        /* 保持原风格，仅对结果区域进行平铺优化 */
+        /* 保持原有CSS风格，针对结果显示区域进行分组优化 */
         #resultArea {
             margin-top: 15px;
             padding: 10px;
@@ -17,13 +17,24 @@
             border-radius: 8px;
             text-align: left;
         }
+
         .res-group {
             margin-bottom: 12px;
             padding-bottom: 8px;
-            border-bottom: 1px dashed rgba(0,0,0,0.2);
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
         }
-        .res-group:last-child { border-bottom: none; }
-        .res-title { font-weight: bold; font-size: 0.9em; margin-bottom: 5px; color: #333; }
+
+        .res-group:last-child {
+            border-bottom: none;
+        }
+
+        .res-title {
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
         .res-item {
             display: flex;
             justify-content: space-between;
@@ -31,8 +42,15 @@
             font-size: 1.05em;
             line-height: 1.6;
         }
-        .tag { color: #555; }
-        .val { color: #007AFF; font-weight: bold; }
+
+        .tag {
+            color: #555;
+        }
+
+        .val {
+            color: #007AFF;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -45,7 +63,7 @@
     <h1>等比数列多项计算</h1>
 
     <label for="a0Input">中心项数值 (a₀)：</label>
-    <input type="text" id="a0Input" value="104800">
+    <input type="text" id="a0Input">
 
     <label for="rateInput">增长百分比 (%)：</label>
     <input type="text" id="rateInput" value="0.75">
@@ -56,7 +74,7 @@
     <button onclick="calculate()">执行计算</button>
 
     <div id="resultArea">
-        请输入数值并点击计算
+        等待输入数据并计算...
     </div>
 
     <button onclick="location.href='/index.html'">回到主页</button>
@@ -71,41 +89,37 @@
         var resultArea = document.getElementById("resultArea");
 
         if (isNaN(a0) || isNaN(ratePercent) || isNaN(n)) {
-            resultArea.innerHTML = "输入无效";
+            resultArea.innerHTML = "<span style='color:red;'>输入无效，请输入a₀数值</span>";
             return;
         }
 
         var r = 1 + ratePercent / 100;
 
-        // 计算函数
+        // 计算函数 a_x = a0 * r^x
         function getV(x) {
             return (a0 * Math.pow(r, x)).toFixed(4);
         }
 
-        // 构建 HTML
         var html = "";
 
-        // 第一组：a-1, a(n-1), an
+        // 第一组：顺序改为 an, a(n-1), a-1
         html += "<div class='res-group'>";
-        html += "<div class='res-title'>[ 第一组: 近端支撑与上行目标 ]</div>";
-        html += "<div class='res-item'><span class='tag'>a<sub>-1</sub> (近底):</span><span class='val'>" + getV(-1) + "</span></div>";
-        html += "<div class='res-item'><span class='tag'>a<sub>" + (n-1) + "</sub> (高位):</span><span class='val'>" + getV(n-1) + "</span></div>";
-        html += "<div class='res-item'><span class='tag'>a<sub>" + n + "</sub> (止损):</span><span class='val'>" + getV(n) + "</span></div>";
+        html += "<div class='res-title'>[ 🔻 ]</div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>" + n + "</sub> (🛑):</span><span class='val'>" + getV(n) + "</span></div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>" + (n - 1) + "</sub> (🔚):</span><span class='val'>" + getV(n - 1) + "</span></div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>-1</sub> (🔛):</span><span class='val'>" + getV(-1) + "</span></div>";
         html += "</div>";
 
-        // 第二组：a-n, a-(n-1), a1
+// 第二组：顺序改为 a1, a-(n-1), a-n
         html += "<div class='res-group'>";
-        html += "<div class='res-title'>[ 第二组: 下行目标与近端压力 ]</div>";
-        html += "<div class='res-item'><span class='tag'>a<sub>-" + n + "</sub> (止损):</span><span class='val'>" + getV(-n) + "</span></div>";
-        html += "<div class='res-item'><span class='tag'>a<sub>-" + (n-1) + "</sub> (低位):</span><span class='val'>" + getV(-(n-1)) + "</span></div>";
-        html += "<div class='res-item'><span class='tag'>a<sub>1</sub> (近顶):</span><span class='val'>" + getV(1) + "</span></div>";
+        html += "<div class='res-title'>[ 🔺 ]</div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>1</sub> (🔚):</span><span class='val'>" + getV(1) + "</span></div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>-" + (n - 1) + "</sub> (🔛):</span><span class='val'>" + getV(-(n - 1)) + "</span></div>";
+        html += "<div class='res-item'><span class='tag'>a<sub>-" + n + "</sub> (🛑):</span><span class='val'>" + getV(-n) + "</span></div>";
         html += "</div>";
 
         resultArea.innerHTML = html;
     }
-
-    // 自动加载初始结果
-    window.onload = calculate;
 </script>
 
 <a href="https://github.com/4evergr8" target="_blank">
