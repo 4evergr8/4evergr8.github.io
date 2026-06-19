@@ -1,6 +1,5 @@
 
 
-@import url('https://fonts.googleapis.com/css2?family=Playwrite+AU+SA:wght@100..400&family=ZCOOL+KuaiLe&display=swap');
 .bvambient_particle
 {
     position: absolute;
@@ -17,23 +16,6 @@
     z-index: -1; /* 将元素置于最底层 */
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; /* 使宽度和高度计算包括内边距 */
-}
-
-body {
-    font-family: "ZCOOL KuaiLe", serif;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 水平居中 */
-    justify-content: center; /* 垂直居中 */
-    height: 100vh; /* 视口高度 */
-    margin: 0; /* 去掉默认的边距 */
-
-}
 
 
 h1 {
@@ -84,7 +66,6 @@ input[type="text"]:hover {
 
 button {
     display: block;
-    font-family: "ZCOOL KuaiLe", serif;
     margin: 10px auto; /* 每个按钮周围有10px的间距 */
     padding: 10px 15px; /* 内边距 */
     background-color: #007bff; /* 按钮背景色 */
@@ -104,7 +85,6 @@ button:hover {
 }
 
 #GitHubIcon {
-    font-family: "Playwrite AU SA", "ZCOOL KuaiLe", serif;
     position: fixed; /* 固定位置 */
     bottom: 10px; /* 距离底部10px */
     right: 10px; /* 距离右侧10px */
@@ -129,7 +109,6 @@ button:hover {
     transform: scale(1.1); /* 悬停时放大 */
 }
 #OwnIcon {
-    font-family: "Playwrite AU SA", "ZCOOL KuaiLe", serif;
     position: fixed; /* 固定位置 */
     bottom: 10px; /* 距离底部10px */
     left: 10px; /* 距离右侧10px */
