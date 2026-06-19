@@ -7,34 +7,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>多合一图片搜索</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9247927382433166"
-            crossorigin="anonymous"></script>
 </head>
 <body>
 
 <div id="ambient"></div>
 <script src="/resources/js/bvambient.js"></script>
 
-
 <div class="card">
     <h1>图片搜索</h1>
-
-    <!-- 图片链接输入框、粘贴按钮和确认按钮在同一行 -->
-    <label>在线图片链接</label>
-    <input type="text" id="imageUrlInput" placeholder="https://example.com/image.jpg">
-    <button onclick="pasteAndSearch()">粘贴并搜索</button>
-
-
-
-    <!-- Worker 地址输入框和上传按钮 -->
 
     <label>图床：</label>
     <input type="text" id="workerUrlInput" value="https://image.4evergr8.workers.dev">
 
-
-    <input type="file" id="fileInput" accept="image/*" onchange="uploadImage(this)">
-    <button onclick="pasteImageFromClipboard()">剪贴板图片</button>
-
+    <!-- 上传 + 剪贴板 并排 -->
+    <div style="display:flex; gap:10px; margin-top:10px;">
+        <input type="file" id="fileInput" accept="image/*" onchange="uploadImage(this)">
+        <button onclick="handleClipboard()">剪贴板</button>
+    </div>
 
     <div id="buttonsContainer" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;"></div>
     <h3>请确保具备国际网络访问能力</h3>
@@ -44,24 +33,13 @@
 </div>
 
 <script>
-    async function pasteAndSearch() {
-        try {
-            const text = await navigator.clipboard.readText();
-            if (!text) return;
-            document.getElementById("imageUrlInput").value = text.trim();
-            generateButtons();
-        } catch (err) {
-            alert("读取剪贴板失败，请检查权限或使用 HTTPS");
-        }
-    }
     function generateButtons() {
-        const url = document.getElementById("imageUrlInput").value.trim();
+        const url = document.getElementById("imageUrlInput")?.value?.trim();
         const container = document.getElementById("buttonsContainer");
         container.innerHTML = "";
 
         if (!url) return;
 
-// 图片反向搜索引擎列表
         const engines = [
             ["Google Lens", `https://lens.google.com/uploadbyurl?url=${url}`],
             ["Yandex.ru", `https://yandex.ru/images/search?url=${url}&rpt=imageview`],
@@ -75,6 +53,7 @@
             ["WAIT", `https://trace.moe/?url=${url}`],
             ["Trace.moe", `https://trace.moe/?url=${url}`]
         ];
+
         for (const [name, link] of engines) {
             const button = document.createElement("button");
             button.textContent = name;
@@ -83,17 +62,15 @@
         }
     }
 
-    async function pasteFromClipboard() {
-        try {
-            const text = await navigator.clipboard.readText();
-            document.getElementById("imageUrlInput").value = text;
-        } catch (err) {
-            alert("读取剪贴板失败，请检查权限或使用 HTTPS");
-        }
-    }
+    async function uploadImage(fileInputOrFile) {
+        let file;
 
-    async function uploadImage(input) {
-        const file = input.files[0];
+        if (fileInputOrFile?.files) {
+            file = fileInputOrFile.files[0];
+        } else {
+            file = fileInputOrFile;
+        }
+
         if (!file) return;
 
         const workerUrl = document.getElementById("workerUrlInput").value.trim();
@@ -122,11 +99,21 @@
             }
 
             const imageUrl = `${workerUrl}/download/${key}`;
-            document.getElementById("imageUrlInput").value = imageUrl;
+            setImageUrl(imageUrl);
             generateButtons();
         } catch (err) {
             alert("图片上传失败: " + err.message);
         }
+    }
+
+    function setImageUrl(url) {
+        if (!document.getElementById("imageUrlInput")) {
+            const hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.id = "imageUrlInput";
+            document.body.appendChild(hidden);
+        }
+        document.getElementById("imageUrlInput").value = url;
     }
 
     function generateRandomKey() {
@@ -137,32 +124,36 @@
         }
         return result;
     }
-    async function pasteImageFromClipboard() {
+
+    async function handleClipboard() {
         try {
             const items = await navigator.clipboard.read();
+
             for (const item of items) {
                 for (const type of item.types) {
                     if (type.startsWith("image/")) {
                         const blob = await item.getType(type);
                         const file = new File([blob], "clipboard.png", { type: blob.type });
-                        await uploadImage({files: [file]});
-
+                        await uploadImage(file);
                         return;
                     }
                 }
             }
-            alert("剪贴板中没有图片");
+
+            const text = await navigator.clipboard.readText();
+            if (text) {
+                setImageUrl(text.trim());
+                generateButtons();
+                return;
+            }
+
+            alert("剪贴板为空");
         } catch (e) {
-            alert("出错");
+            alert("读取剪贴板失败");
         }
     }
 </script>
 
-<a href="https://github.com/4evergr8" target="_blank">
-    <img src="/resources/github-mark.png" alt="项目地址" id="GitHubIcon">
-</a>
-<a href="https://space.bilibili.com/3546816836537000" target="_blank">
-    <img src="/resources/icon.png" alt="项目地址" id="OwnIcon">
-</a>
+
 </body>
 </html>
