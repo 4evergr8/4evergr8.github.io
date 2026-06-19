@@ -1,0 +1,200 @@
+
+
+.bvambient_particle
+{
+    position: absolute;
+    pointer-events: none;
+    transition: top linear, left linear;
+
+}
+
+#ambient {
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: -1; /* 将元素置于最底层 */
+}
+
+
+
+h1 {
+    font-size: 30px;
+    text-align: center; /* 标题居中 */
+    color: black; /* 字体颜色 */
+    margin: 10px; /* 边距 */
+}
+h2 {
+    text-align: center; /* 标题居中 */
+    color: black; /* 字体颜色 */
+    margin: 10px; /* 边距 */
+}
+h3 {
+    text-align: center; /* 标题居中 */
+    color: black; /* 字体颜色 */
+    margin: 10px; /* 边距 */
+}
+
+
+
+
+label {
+    font-size: 18px; /* 标签字体大小 */
+    margin: 10px; /* 边距 */
+    align-self: center; /* 垂直居中 */
+}
+
+
+input[type="text"] {
+    display: block;
+    margin: 10px auto; /* 每个按钮周围有10px的间距 */
+    padding: 10px; /* 内边距 */
+    border: 2px solid #007bff; /* 边框颜色 */
+    border-radius: 10px; /* 圆角 */
+    font-size: 16px; /* 字体大小 */
+    width: 75%;                /* 宽度为父容器的80% */
+
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
+}
+
+
+
+input[type="text"]:hover {
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* 悬停时阴影 */
+    transform: scale(1.1); /* 悬停时上移 */
+}
+
+button {
+    display: block;
+    margin: 10px auto; /* 每个按钮周围有10px的间距 */
+    padding: 10px 15px; /* 内边距 */
+    background-color: #007bff; /* 按钮背景色 */
+    color: white; /* 按钮字体颜色 */
+    border: none; /* 去掉边框 */
+    border-radius: 10px; /* 圆角 */
+    font-size: 16px; /* 字体大小 */
+    cursor: pointer; /* 鼠标指针样式 */
+    width: 45%;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
+}
+
+button:hover {
+    background-color: #0056b3; /* 悬停时背景色 */
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5); /* 悬停时阴影 */
+    transform: scale(1.1); /* 悬停时放大 */
+}
+
+#GitHubIcon {
+    position: fixed; /* 固定位置 */
+    bottom: 10px; /* 距离底部10px */
+    right: 10px; /* 距离右侧10px */
+    width: 30px; /* 设置宽度为30px */
+    height: 30px; /* 设置高度为30px */
+    margin: 0; /* 移除外边距 */
+    padding: 0; /* 移除内边距 */
+    background-color: #007bff; /* 按钮背景色 */
+    border: none; /* 去掉边框 */
+    border-radius: 50%; /* 设置为圆形 */
+    font-size: 16px; /* 字体大小 */
+    cursor: pointer; /* 鼠标指针样式 */
+    display: flex; /* 使用Flexbox居中内容 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
+}
+
+#GitHubIcon:hover {
+    background-color: #ffffff; /* 悬停时背景色 */
+    box-shadow: 0 4px 15px rgb(255, 255, 255); /* 悬停时阴影 */
+    transform: scale(1.1); /* 悬停时放大 */
+}
+#OwnIcon {
+    position: fixed; /* 固定位置 */
+    bottom: 10px; /* 距离底部10px */
+    left: 10px; /* 距离右侧10px */
+    width: 30px; /* 设置宽度为30px */
+    height: 30px; /* 设置高度为30px */
+    margin: 0; /* 移除外边距 */
+    padding: 0; /* 移除内边距 */
+    background-color: rgba(0, 123, 255, 0); /* 按钮背景色 */
+    border: none; /* 去掉边框 */
+    border-radius: 50%; /* 设置为圆形 */
+    font-size: 16px; /* 字体大小 */
+    cursor: pointer; /* 鼠标指针样式 */
+    display: flex; /* 使用Flexbox居中内容 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 添加过渡效果 */
+}
+
+#OwnIcon:hover {
+    background-color: rgb(255, 255, 255); /* 悬停时背景色 */
+    box-shadow: 0 4px 15px rgb(255, 255, 255); /* 悬停时阴影 */
+    transform: scale(1.1); /* 悬停时放大 */
+}
+
+
+.card {
+    width: 90%;          /* 自适应屏幕 */
+    max-width: 350px;    /* 最大宽度 */
+    margin: 40px auto;   /* 居中 + 顶部留白 */
+
+    padding: 20px; /* 内边距 */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+    text-align: center; /* 文本居中 */
+    background: linear-gradient(to right, rgba(50, 50, 50, 1), rgba(211, 211, 211, 1)); /* 更淡的黑到浅灰的渐变 */
+
+    backface-visibility: hidden;
+    border-radius: 15px;
+    border: 2px solid #007bff; /* 边框颜色 */
+}
+/* 基础样式 */
+.select {
+    width: 220px;
+    padding: 10px 40px 10px 15px; /* 左右内边距留出箭头空间 */
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    color: #333;
+    appearance: none; /* 移除浏览器默认样式 */
+    cursor: pointer;
+    outline: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%227%22%20viewBox%3D%220%200%2010%207%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%200l5%207%205-7H0z%22%20fill%3D%22%23007bff%22/%3E%3C/svg%3E"); /* 下拉箭头 */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 7px;
+    /* 水平居中 */
+    display: block;
+    margin: 20px auto; /* 上下间距可调整 */
+}
+
+
+.select:hover {
+    border-color: #0056b3;
+}
+input[type="file"] {
+    width: 220px;
+    padding: 10px 40px 10px 15px; /* 左右内边距留出箭头空间 */
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    color: #333;
+    appearance: none; /* 移除浏览器默认样式 */
+    cursor: pointer;
+    outline: none;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 7px;
+    /* 水平居中 */
+    display: block;
+    margin: 20px auto; /* 上下间距可调整 */
+}
+
+
+input[type="file"]:hover {
+    border-color: #0056b3;
+}
