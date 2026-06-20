@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+
 <html lang="zh">
 <head>
-    <link rel="stylesheet" href="/resources/style.css"/>
-    <link rel="icon" href="/resources/icon.png" type="image/png">
-    <meta name="apple-touch-icon" content="/resources/icon.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/resources/style.css" rel="stylesheet"></link>
+    <link href="/resources/icon.png" rel="icon" type="image/png"></link>
+    <meta content="/resources/icon.png" name="apple-touch-icon"></meta>
+    <meta charset="UTF-8"></meta>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
     <title>反向图片搜索</title>
 </head>
 <body>
@@ -15,15 +16,15 @@
     <h1>反向图片搜索</h1>
 
     <label>自建图床链接：</label>
-    <input type="text" id="workerUrlInput" value="https://image.4evergr8.workers.dev">
+    <input id="workerUrlInput" type="text" value="https://image.4evergr8.workers.dev" />
 
     <!-- 上传 + 剪贴板 并排 -->
-    <div >
-        <input type="file" id="fileInput" accept="image/*" onchange="uploadImage(this)">
+    <div>
+        <input accept="image/*" id="fileInput" onchange="uploadImage(this)" type="file" />
         <button onclick="handleClipboard()">剪贴板</button>
     </div>
 
-    <div id="buttonsContainer" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;"></div>
+    <div id="buttonsContainer" style="align-items: center; display: flex; flex-direction: column; gap: 10px; margin-top: 20px;"></div>
     <button onclick="location.href='/index.html'">回到主页</button>
 
 </div>
@@ -77,7 +78,7 @@
 
         const randomKey = generateRandomKey();
         const timestamp = Date.now();
-        const key = `${randomKey}${timestamp}`;
+        const key = `${timestamp}${randomKey}-WEB`;
         const uploadUrl = `${workerUrl}/upload/${key}`;
 
         const formData = new FormData();
