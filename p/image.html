@@ -1,4 +1,3 @@
-
 <html lang="zh">
 <head>
 
@@ -16,15 +15,16 @@
     <h1>反向图片搜索</h1>
 
     <label>自建图床链接：</label>
-    <input id="workerUrlInput" type="text" value="https://image-6eu.pages.dev" />
+    <input id="workerUrlInput" type="text" value="https://image-6eu.pages.dev"/>
 
     <!-- 上传 + 剪贴板 并排 -->
     <div>
-        <input accept="image/*" id="fileInput" onchange="uploadImage(this)" type="file" />
+        <input accept="image/*" id="fileInput" onchange="uploadImage(this)" type="file"/>
         <button onclick="handleClipboard()">剪贴板</button>
     </div>
 
-    <div id="buttonsContainer" style="align-items: center; display: flex; flex-direction: column; gap: 10px; margin-top: 20px;"></div>
+    <div id="buttonsContainer"
+         style="align-items: center; display: flex; flex-direction: column; gap: 10px; margin-top: 20px;"></div>
     <button onclick="location.href='/index.html'">回到主页</button>
 
 </div>
@@ -77,8 +77,11 @@
         }
 
         const randomKey = generateRandomKey();
-        const timestamp = Date.now();
-        const key = `${timestamp}${randomKey}-WEB`;
+        const MAX_TS = 9999999999999;
+
+        let timestamp = MAX_TS - Date.now();
+
+        const key = `${String(timestamp).padStart(13, '0')}${randomKey}-WEB`;
         const uploadUrl = `${workerUrl}/upload/${key}`;
 
         const formData = new FormData();
@@ -130,7 +133,7 @@
                 for (const type of item.types) {
                     if (type.startsWith("image/")) {
                         const blob = await item.getType(type);
-                        const file = new File([blob], "clipboard.png", { type: blob.type });
+                        const file = new File([blob], "clipboard.png", {type: blob.type});
                         await uploadImage(file);
                         return;
                     }
