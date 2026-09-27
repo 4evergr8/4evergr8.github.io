@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AV / BV 互转 · 工具箱</title>
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="dot"></span><span class="txt">工具箱</span></a>
+  <nav class="nav">
+    <a href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.6 12 4l8 6.6"/><path d="M6.2 9.6V20h11.6V9.6"/><path d="M10 20v-5h4v5"/></svg>
+      <span class="t">首页</span>
+    </a>
+    <a href="avbv.html" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 9H4m0 0 3-3M4 9l3 3"/><path d="M16.5 15H20m0 0-3 3M20 15l-3-3"/><path d="M4.5 12h15"/></svg>
+      <span class="t">AV/BV</span>
+    </a>
+    <a href="beast.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10v4M8 6.5v11M12 3.5v17M16 8v8M20 11v2"/></svg>
+      <span class="t">兽音</span>
+    </a>
+    <a href="base64.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6.5A2.5 2.5 0 0 0 4 6.5v3.2L8.4 11 4 12.3v5.2A2.5 2.5 0 0 0 6.5 20H8"/><path d="M16 4h1.5A2.5 2.5 0 0 1 20 6.5v3.2L15.6 11 20 12.3v5.2A2.5 2.5 0 0 1 17.5 20H16"/></svg>
+      <span class="t">Base64</span>
+    </a>
+    <a href="foyue.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/></svg>
+      <span class="t">佛曰</span>
+    </a>
+    <a href="ocr.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5.6A2.6 2.6 0 0 1 5.6 3H8"/><path d="M16 3h2.4A2.6 2.6 0 0 1 21 5.6V8"/><path d="M21 16v2.4A2.6 2.6 0 0 1 18.4 21H16"/><path d="M8 21H5.6A2.6 2.6 0 0 1 3 18.4V16"/><path d="M3.5 12h17"/></svg>
+      <span class="t">OCR</span>
+    </a>
+    <a href="image.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.6"/><circle cx="10.4" cy="10.4" r="3.3"/><path d="m13.1 13.1 4.3 4.3"/></svg>
+      <span class="t">图搜</span>
+    </a>
+    <a href="ip.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2"/><path d="M12 3.4c2.6 2.5 4 5.4 4 8.6s-1.4 6.1-4 8.6c-2.6-2.5-4-5.4-4-8.6S9.4 5.9 12 3.4z"/></svg>
+      <span class="t">IP</span>
+    </a>
+  </nav>
+  <span class="spacer"></span>
+  <button class="icon-btn" data-theme-toggle title="切换夜间模式" aria-label="切换夜间模式">
+    <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+  </button>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <h1>AV / BV 互转</h1>
+    <p>输入 av 号得到 BV 号，输入 BV 号得到 av 号，自动识别方向。每行一个，可批量。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="io">
+    <div class="pane">
+      <div class="pane-head"><span class="title">输入</span><span class="count" id="in-count">0 字</span></div>
+      <textarea id="in" class="editor" data-count="in-count" spellcheck="false" placeholder="av170001&#10;或 170001&#10;或 BV17x411w7KC&#10;（每行一个）"></textarea>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span class="title">输出</span><span class="count" id="out-count">0 字</span></div>
+      <textarea id="out" class="editor" data-count="out-count" spellcheck="false" placeholder="转换结果会出现在这里"></textarea>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn primary" id="run">转换</button>
+    <button class="btn" data-copy="out">复制结果</button>
+    <button class="btn" data-swap="in,out">交换</button>
+    <button class="btn" id="demo">填个示例</button>
+    <button class="btn" data-clear="in,out">清空</button>
+  </div>
+
+  <section class="info">
+    <h3>这是什么</h3>
+    <ul>
+      <li>B 站 2020 年 3 月起用 <code>BV</code> 号替代 <code>av</code> 号，两者一一对应，可无损互转。</li>
+      <li>算法本质：av 号与固定值异或后，按 58 进制映射到一张乱序字母表，再交换其中两位得到 12 位 BV 号。</li>
+      <li>本页常量已与线上真实稿件的 <code>aid</code> / <code>bvid</code> 对拍校验，转换结果可靠。</li>
+      <li>BV 号大小写敏感，复制时请保持原样。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="js/common.js"></script>
+<script src="js/avbv.js"></script>
+<script>
+(function () {
+  var inEl = document.getElementById('in');
+  var outEl = document.getElementById('out');
+
+  function run(doReveal) {
+    Toy.hideMsg('msg');
+    var lines = inEl.value.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length; });
+    if (!lines.length) { Toy.setVal(outEl, ''); return; }
+
+    var out = [], errs = [];
+    lines.forEach(function (line, i) {
+      try {
+        out.push(ToyAVBV.convert(line).output);
+      } catch (e) {
+        errs.push('第 ' + (i + 1) + ' 行：' + e.message);
+      }
+    });
+    Toy.setVal(outEl, out.join('\n'));
+    if (errs.length) Toy.showMsg('msg', errs.join('　'));
+    if (doReveal && out.length) Toy.reveal(outEl);
+  }
+
+  document.getElementById('run').addEventListener('click', function () { run(true); });
+  document.getElementById('demo').addEventListener('click', function () {
+    Toy.setVal(inEl, 'av170001\n170001\nBV17x411w7KC');
+    run(true);
+  });
+
+  // 边输入边转换，但不在此时滚动页面
+  var timer = null;
+  inEl.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () { run(false); }, 180);
+  });
+})();
+</script>
+</body>
+</html>
