@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>反向图片搜索 · 工具箱</title>
+<meta name="description" content="把图片传到图床拿到外链，然后一键跳转到 Google Lens、SauceNAO、ascii2d、Yandex 等反向图片搜索站。">
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="topline">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    <span>回主页</span>
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="head">
+    <h1>反向图片搜索 <span class="tag-net">需要联网</span></h1>
+    <p>搜索引擎只认外链，所以先把图片传到图床拿到一个公开地址，再一键跳到各个搜图站。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="card">
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="选择或拖入图片">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V15"/></svg>
+      <span class="big">点击选择图片，或把图片拖到这里</span>
+      <span class="small">也可以 Ctrl / Cmd + V 粘贴；如果剪贴板里是链接，会当作图片地址使用</span>
+      <input type="file" id="file" accept="image/*">
+    </div>
+
+    <div class="shot-wrap" id="shotWrap" style="margin-top:14px; display:none;">
+      <img class="shot" id="shot" alt="待搜索的图片">
+    </div>
+
+    <div class="toolbar" style="margin-bottom:0;">
+      <button class="btn primary" id="upload">上传到图床</button>
+      <button class="btn" id="paste">读剪贴板</button>
+      <button class="btn" data-copy="url">复制链接</button>
+      <button class="btn" id="reset">清空</button>
+      <span class="spacer"></span>
+    </div>
+    <div style="margin-top:12px;">
+      <input class="line-input" id="url" spellcheck="false" placeholder="图片外链会填在这里，也可以直接粘贴一个已有的图片地址">
+    </div>
+    <div class="status" id="status" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="sub">
+      选择搜索引擎
+      <span class="count" id="engCount">等待图片链接</span>
+    </div>
+    <div id="engines" class="engines">
+      <div class="empty">先上传图片，或者直接在上面填一个图片地址</div>
+    </div>
+  </div>
+
+  <section class="info">
+    <h3>说明</h3>
+    <ul>
+      <li>跳转的搜索引擎只接受图片 URL，不能直接吃本地文件，所以才有「先传图床」这一步。</li>
+      <li>上传后的链接是公开的，任何拿到链接的人都能看到这张图，别传敏感内容。</li>
+      <li>上传接口是第三方图床，图片会经过对方的服务器；地址写死在 <code>js/image.js</code> 顶部的 <code>IMAGE_HOST</code>。</li>
+      <li>常用组合：找动漫原图用 SauceNAO / ascii2d / trace.moe，找来源和相似图用 Google Lens / Yandex / TinEye。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="../js/common.js"></script>
+<script src="../js/image.js"></script>
+</body>
+</html>
