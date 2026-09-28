@@ -13,6 +13,39 @@
 
   var DEFAULT_GAP = 3;   // 推断不出结束时间时的默认时长（秒）
 
+  /* 重名文件加 -2、-3 后缀，避免同时下载时互相覆盖 */
+  function dedupeNames(list) {
+    var used = Object.create(null);
+    return list.map(function (r) {
+      var name = r.name;
+      if (used[name]) {
+        var dot = name.lastIndexOf('.');
+        var base = dot > 0 ? name.slice(0, dot) : name;
+        var ext = dot > 0 ? name.slice(dot) : '';
+        var i = 2;
+        while (used[base + '-' + i + ext]) i++;
+        name = base + '-' + i + ext;
+      }
+      used[name] = true;
+      return { name: name, out: r.out };
+    });
+  }
+
+  function saveAs(blob, name) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function saveText(text, name) {
+    saveAs(new Blob([text], { type: 'text/plain;charset=utf-8' }), name);
+  }
+
   /* ---------------- 时间工具 ---------------- */
   function pad(n, len) {
     var s = String(n);
@@ -255,11 +288,39 @@
   var fileCountEl = document.getElementById('fileCount');
   var inEl = document.getElementById('in');
   var resultsEl = document.getElementById('results');
+  var resBarEl = document.getElementById('resBar');
+  var resCountEl = document.getElementById('resCount');
+  var dlAllBtn = document.getElementById('downloadAll');
 
   var target = 'lrc';
   var source = 'auto';
   var endBlank = true;
   var files = [];
+  var results = [];   // [{ name, out }]，供一键下载使用
+
+  function refreshResBar() {
+    resBarEl.style.display = results.length ? 'flex' : 'none';
+    resCountEl.textContent = results.length + ' 个结果';
+    dlAllBtn.textContent = results.length > 1 ? '一键下载全部' : '下载文件';
+  }
+
+  /* 逐个触发下载，中间留间隔，避免浏览器把连续下载拦掉 */
+  function downloadAll() {
+    if (!results.length) return;
+    var list = dedupeNames(results);
+    var i = 0;
+    (function next() {
+      if (i >= list.length) {
+        Toy.toast('已下载 ' + list.length + ' 个文件');
+        return;
+      }
+      saveText(list[i].out, list[i].name);
+      i++;
+      setTimeout(next, 300);
+    })();
+  }
+
+  dlAllBtn.addEventListener('click', downloadAll);
 
   function bindSeg(id, cb) {
     var box = document.getElementById(id);
@@ -379,16 +440,7 @@
     dlBtn.className = 'btn';
     dlBtn.type = 'button';
     dlBtn.textContent = '下载';
-    dlBtn.addEventListener('click', function () {
-      var url = URL.createObjectURL(new Blob([out], { type: 'text/plain;charset=utf-8' }));
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    });
+    dlBtn.addEventListener('click', function () { saveText(out, name); });
 
     acts.appendChild(copyBtn);
     acts.appendChild(dlBtn);
@@ -414,6 +466,9 @@
     item.appendChild(body);
     resultsEl.appendChild(item);
     Toy.autoGrow(ta);
+
+    results.push({ name: name, out: out });
+    refreshResBar();
   }
 
   function outName(srcName, fmt) {
@@ -455,6 +510,8 @@
   function run() {
     Toy.hideMsg('msg');
     resultsEl.innerHTML = '';
+    results = [];
+    refreshResBar();
 
     if (files.length) {
       var jobs = files.map(function (f) {
@@ -489,6 +546,8 @@
     renderFiles();
     Toy.setVal(inEl, '');
     resultsEl.innerHTML = '';
+    results = [];
+    refreshResBar();
     Toy.hideMsg('msg');
   });
 
