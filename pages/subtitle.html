@@ -86,6 +86,12 @@
     </div>
   </div>
 
+  <div id="resBar" class="toolbar" style="display:none; margin:14px 0 0;">
+    <span class="field-label" id="resCount">0 个结果</span>
+    <span class="spacer"></span>
+    <button class="btn primary" id="downloadAll">一键下载</button>
+  </div>
+
   <div id="results" style="margin-top:14px;"></div>
 
   <section class="info">
@@ -98,6 +104,7 @@
       <li>文件按 UTF-8 读取，解码失败时自动退回 GBK，结果里会标明实际用的编码。</li>
       <li>VTT 的说话人标记 <code>&lt;v 名字&gt;</code> 和行内时间戳会被清掉，其余内容原样保留。</li>
       <li>上传的多个文件逐个转换，每条结果都可以单独复制或下载，文件不会离开你的浏览器。</li>
+      <li>「一键下载」会把全部结果逐个下载下来，重名的文件自动加 <code>-2</code> <code>-3</code> 后缀，不会互相覆盖。浏览器可能会问一次「是否允许下载多个文件」，允许即可。</li>
     </ul>
   </section>
 </main>
