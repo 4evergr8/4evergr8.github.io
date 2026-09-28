@@ -145,20 +145,6 @@
     }, 60);
   }
 
-  /** 软键盘弹出时给 body 打标记，用于收起底部标签栏 */
-  function initMobile() {
-    if (!window.matchMedia) return;
-    document.addEventListener('focusin', function (e) {
-      var t = e.target.tagName;
-      if (isNarrow() && (t === 'TEXTAREA' || t === 'INPUT')) {
-        document.body.classList.add('kb-open');
-      }
-    });
-    document.addEventListener('focusout', function () {
-      document.body.classList.remove('kb-open');
-    });
-  }
-
   /* ---------- 绑定通用按钮 ---------- */
   function bindCommon() {
     Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (btn) {
@@ -185,7 +171,6 @@
     initTheme();
     initEditors();
     bindCommon();
-    initMobile();
   }
 
   global.Toy = {
