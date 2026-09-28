@@ -10,38 +10,44 @@
 
 | 工具 | 页面 | 说明 | 联网 |
 | --- | --- | --- | --- |
-| AV / BV 互转 | `avbv.html` | B 站稿件 `av` 号与 `BV` 号互相转换，支持批量 | 否 |
-| 兽音译者 | `beast.html` | 把文字变成「嗷呜啊~」，也能还原回来 | 否 |
-| Base64 | `base64.html` | UTF-8 安全的编解码，标准 / URL 安全两种字母表 | 否 |
-| 佛曰 | `foyue.html` | 与佛论禅 V1「佛曰：……」的加密与解密 | 否 |
-| 浏览器 OCR | `ocr.html` | tesseract.js 本地识别中英日文字 | 首次需下载模型 |
-| 反向图片搜索 | `image.html` | 传图床拿外链，一键跳到 12 个搜图站 | 是 |
-| IP 信息查询 | `ip.html` | 公网出口、归属地、运营商 + WebRTC 泄漏检测 | 是 |
+| AV / BV 互转 | `pages/avbv.html` | B 站稿件 `av` 号与 `BV` 号互相转换，支持批量 | 否 |
+| 兽音译者 | `pages/beast.html` | 把文字变成「嗷呜啊~」，也能还原回来 | 否 |
+| Base64 | `pages/base64.html` | UTF-8 安全的编解码，标准 / URL 安全两种字母表 | 否 |
+| 佛曰 | `pages/foyue.html` | 与佛论禅 V1「佛曰：……」的加密与解密 | 否 |
+| 字幕转换 | `pages/subtitle.html` | LRC / SRT / VTT 互转，支持多文件批量 | 否 |
+| 浏览器 OCR | `pages/ocr.html` | tesseract.js 本地识别中英日文字 | 首次需下载模型 |
+| 反向图片搜索 | `pages/image.html` | 传图床拿外链，一键跳到 12 个搜图站 | 是 |
+| IP 信息查询 | `pages/ip.html` | 公网出口、归属地、运营商 + WebRTC 泄漏检测 | 是 |
 
 ## 目录结构
 
 ```
-├── index.html          首页
-├── avbv.html           各工具页面（每个页面自带完整导航）
-├── beast.html
-├── base64.html
-├── foyue.html
-├── ocr.html
-├── image.html
-├── ip.html
+├── index.html          首页，列出所有工具
+├── pages/              子页面，每个工具一个文件
+│   ├── avbv.html
+│   ├── beast.html
+│   ├── base64.html
+│   ├── foyue.html
+│   ├── subtitle.html
+│   ├── ocr.html
+│   ├── image.html
+│   └── ip.html
 ├── css/
 │   └── style.css       全部样式，明暗主题用 CSS 变量切换
 └── js/
-    ├── common.js       公共层：主题、输入框自动增高、复制、Toast、移动端适配
+    ├── common.js       公共层：主题、输入框自动增高、复制、Toast
     ├── avbv.js         各工具的算法实现
     ├── beast.js
     ├── base64.js
     ├── foyue.js
     ├── aes.js          纯 JS 的 AES-256-CBC，仅供佛曰使用
+    ├── subtitle.js     字幕解析 / 生成
     ├── ocr.js
     ├── image.js
     └── ip.js
 ```
+
+子页面顶部只有一个「回主页」按钮，工具之间不互相跳转，统一从首页进。主题开关放在首页右上角，选择存在 localStorage 里。
 
 ## 本地跑起来
 
@@ -63,6 +69,13 @@ python -m http.server 8000
 **佛曰** — 明文 → UTF-16LE 字节 → PKCS#7 补位 → AES-256-CBC（固定密钥）→ 逐字节映射成咒字。因为字节 ≥ 128 时会插入转义字，同一段明文每次加密结果都可能不同。仅支持 V1；V2「如是我闻」额外套了一层 7z(LZMA)，浏览器端没有合适的实现，粘贴进来会给出提示。
 
 **Base64** — 编码前先做 UTF-8 编码，中文和 emoji 都不会乱码。解码时自动忽略换行空格，标准与 URL 安全字母表都能识别，不用手动切换。
+
+**字幕转换** — 三种格式先解析成统一的中间结构 `[{ start, end, text }]`，再由它生成目标格式，所以任意两种都能互转。SRT / VTT 自带结束时间；LRC 只有起始时间，结束时间按下面两条规则补：
+
+- 原 LRC **带空行条目**（`[01:23.45]` 后面没有文字）→ 用该时间戳作为上一行的结束时间，这是准确值；
+- 原 LRC **不带空行** → 用下一行的起始时间推断，最后一行按 3 秒计，结果里会给出提示。
+
+反过来转成 LRC 时，默认在每条的结束时间点写一行空的时间戳，播放器才知道何时收起上一行；不需要可以关掉。文件按 UTF-8 读取，解码失败自动退回 GBK。
 
 **OCR** — tesseract.js v5，识别在浏览器本地完成，图片不出本机。首次使用要从 jsDelivr 下载识别模型（中文约 20 MB），之后被浏览器缓存，可离线使用。语言可切中英 / 中日英 / 英文 / 繁中。
 
