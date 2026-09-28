@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>兽音译者 · 工具箱</title>
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="topline">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    <span>回主页</span>
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="head">
+    <h1>兽音译者</h1>
+    <p>把文字变成一串「嗷呜啊~」，也能原样还原。密钥可自定义，解密时自动识别。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="io">
+    <div class="pane">
+      <div class="pane-head"><span class="title">原文</span><span class="count" id="in-count">0 字</span></div>
+      <textarea id="in" class="editor" data-count="in-count" spellcheck="false" placeholder="在这里输入要加密或要还原的内容"></textarea>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span class="title">兽音</span><span class="count" id="out-count">0 字</span></div>
+      <textarea id="out" class="editor" data-count="out-count" spellcheck="false" placeholder="结果会出现在这里"></textarea>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn primary" id="enc">加密 →</button>
+    <button class="btn" id="dec">← 解密</button>
+    <button class="btn" data-copy="out">复制结果</button>
+    <button class="btn" data-swap="in,out">交换</button>
+    <button class="btn" data-clear="in,out">清空</button>
+    <span class="spacer"></span>
+    <span class="field-label">密钥（4 字）</span>
+    <input id="set" class="set-input" value="嗷呜啊~" spellcheck="false" placeholder="留空自动识别">
+  </div>
+
+  <section class="info">
+    <h3>说明</h3>
+    <ul>
+      <li>原理：每个字符先转成 4 位十六进制，再按「位置递增的偏移量」映射到密钥里两位字符的组合。</li>
+      <li><b>密钥</b>是 4 个互不相同的字符，默认 <code>嗷呜啊~</code>。密文固定为 <code>key[3] key[1] key[0]</code> + 正文 + <code>key[2]</code>，所以换密钥后头尾标记也会跟着变。</li>
+      <li><b>自动识别</b>：解密时如果填写的密钥对不上，会自动从密文反推——密文里恰好出现 4 种字符，且头三个字符依次是密钥的 3、1、0 号、末位是 2 号，即可确定顺序。识别结果会填回输入框。</li>
+      <li>若密文被截断、或只用到不足 4 种字符，就无法自动识别，需要手动填写密钥。</li>
+      <li>只能处理 BMP 内的字符（U+0000–U+FFFF）。emoji 等需要代理对的字符会丢失信息。</li>
+      <li>这只是一个编码混淆，不具备任何密码学强度，不要用来保护真正的内容。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="../js/common.js"></script>
+<script src="../js/beast.js"></script>
+<script>
+(function () {
+  var inEl = document.getElementById('in');
+  var outEl = document.getElementById('out');
+  var setEl = document.getElementById('set');
+
+  /** 判断一段文本是否可能是由某个 4 字密钥生成的兽音密文 */
+  function looksBeast(s) {
+    var t = String(s).replace(/\s+/g, '');
+    if (!t) return false;
+    var kinds = Array.from(new Set(Array.from(t)));
+    if (kinds.length > 4) return false;              // 超过 4 种字符，肯定不是
+    var given = Array.from(new Set(Array.from(setEl.value || '')));
+    if (given.length === 4) {
+      return kinds.every(function (c) { return given.indexOf(c) >= 0; });
+    }
+    return true;                                      // 没填密钥时，交给解码器去识别
+  }
+
+  /** 挑一个能解开这段密文的密钥；优先用填写的，其次自动识别 */
+  function pickKey(cipher) {
+    var given = (setEl.value || '').trim();
+    var t = String(cipher).replace(/\s+/g, '');
+    var kinds = Array.from(new Set(Array.from(t)));
+
+    if (given.length === 4 && kinds.every(function (c) { return given.indexOf(c) >= 0; })) {
+      return { key: given, auto: false };
+    }
+    var det = ToyBeast.detectSet(cipher);
+    if (!det) throw new Error('无法自动识别密钥：密文中应恰好出现 4 种字符，请手动填写密钥');
+    setEl.value = det.set.join('');                   // 回填，方便下次复用
+    return { key: det.set.join(''), auto: true };
+  }
+
+  function doIt(mode) {
+    Toy.hideMsg('msg');
+    var src, dst;
+    if (mode === 'enc') {
+      src = inEl; dst = outEl;
+    } else if (looksBeast(inEl.value)) {
+      src = inEl; dst = outEl;
+    } else if (looksBeast(outEl.value)) {
+      src = outEl; dst = inEl;
+    } else {
+      src = inEl.value.trim() ? inEl : outEl;
+      dst = src === inEl ? outEl : inEl;
+    }
+    if (!src.value.trim()) { Toy.showMsg('msg', '请输入内容'); return; }
+    try {
+      var res, note = '';
+      if (mode === 'enc') {
+        res = ToyBeast.encode(src.value, setEl.value);
+      } else {
+        var picked = pickKey(src.value);
+        res = ToyBeast.decode(src.value, picked.key);
+        if (picked.auto) note = '自动识别到密钥「' + picked.key + '」，已填入右侧输入框';
+      }
+      Toy.setVal(dst, res);
+      if (note) Toy.showMsg('msg', note, 'ok'); else Toy.hideMsg('msg');
+      Toy.reveal(dst);
+    } catch (e) {
+      Toy.showMsg('msg', e.message);
+    }
+  }
+
+  document.getElementById('enc').addEventListener('click', function () { doIt('enc'); });
+  document.getElementById('dec').addEventListener('click', function () { doIt('dec'); });
+})();
+</script>
+</body>
+</html>
