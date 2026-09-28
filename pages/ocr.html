@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>浏览器 OCR · 工具箱</title>
+<meta name="description" content="纯浏览器端的图片文字识别，支持中英日，模型在本地运行，图片不上传服务器。">
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="topline">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    <span>回主页</span>
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="head">
+    <h1>浏览器 OCR <span class="tag-net">需要联网</span></h1>
+    <p>用 tesseract.js 在浏览器本地跑识别，图片不会上传到本站以外的服务器。首次使用需要下载识别模型，请耐心等待。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="card">
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="选择或拖入图片">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V15"/></svg>
+      <span class="big">点击选择图片，或把图片拖到这里</span>
+      <span class="small">也可以直接 Ctrl / Cmd + V 粘贴剪贴板里的图片</span>
+      <input type="file" id="file" accept="image/*">
+    </div>
+
+    <div class="shot-wrap" id="shotWrap" style="margin-top:14px; display:none;">
+      <img class="shot" id="shot" alt="待识别的图片">
+      <div class="shot-meta">
+        <div><b id="fName">—</b></div>
+        <div>尺寸 <b id="fSize">—</b></div>
+        <div>大小 <b id="fBytes">—</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="toolbar" style="margin:0;">
+      <span class="field-label">语言</span>
+      <div class="seg" id="lang">
+        <button data-v="chi_sim+eng" class="on">中英</button>
+        <button data-v="jpn+chi_sim+eng">中日英</button>
+        <button data-v="eng">英文</button>
+        <button data-v="chi_tra+eng">繁中</button>
+      </div>
+      <span class="field-label">输出</span>
+      <div class="seg" id="tidy">
+        <button data-v="raw" class="on">原样</button>
+        <button data-v="compact">压缩空白</button>
+        <button data-v="strip">全部去除</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn primary" id="run">开始识别</button>
+      <button class="btn" id="paste">读剪贴板</button>
+      <button class="btn" data-copy="out">复制结果</button>
+      <button class="btn" id="reset">清空</button>
+    </div>
+
+    <div class="status" id="status" style="margin-bottom:8px;"></div>
+    <div class="prog" id="progWrap" style="display:none;"><i id="progBar"></i></div>
+  </div>
+
+  <div class="pane" style="margin-top:14px;">
+    <div class="pane-head"><span class="title">识别结果</span><span class="count" id="out-count">0 字</span></div>
+    <textarea id="out" class="editor" data-count="out-count" spellcheck="false" placeholder="识别出来的文字会显示在这里"></textarea>
+  </div>
+
+  <section class="info">
+    <h3>说明</h3>
+    <ul>
+      <li>识别在浏览器本地完成，图片不上传；但首次使用需要从 CDN 下载识别模型（中文约 20 MB，之后会被浏览器缓存）。</li>
+      <li>语言按 tesseract 的语言包组合填写，中英 = <code>chi_sim+eng</code>；语言越多越慢，一般中英即可。</li>
+      <li>输出处理：<b>原样</b> 保留换行，<b>压缩空白</b> 把连续空白合并成一个空格，<b>全部去除</b> 删掉所有空白（适合提取无分段的文本）。</li>
+      <li>识别精度取决于图片清晰度。截图、扫描件效果最好；低分辨率或强噪点的图片建议先放大或降噪。</li>
+      <li>剪贴板读取需要 HTTPS 页面并授权；失败时请改用「点击选择图片」或直接粘贴。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="../js/common.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" crossorigin="anonymous"></script>
+<script src="../js/ocr.js"></script>
+</body>
+</html>
