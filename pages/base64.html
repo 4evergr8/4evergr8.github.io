@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Base64 编解码 · 工具箱</title>
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="topline">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    <span>回主页</span>
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="head">
+    <h1>Base64 编解码</h1>
+    <p>按 UTF-8 处理中文，不会出现乱码。支持标准字母表与 URL 安全字母表。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="io">
+    <div class="pane">
+      <div class="pane-head"><span class="title">原文</span><span class="count" id="in-count">0 字</span></div>
+      <textarea id="in" class="editor" data-count="in-count" spellcheck="false" placeholder="在这里输入文字"></textarea>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span class="title">Base64</span><span class="count" id="out-count">0 字</span></div>
+      <textarea id="out" class="editor" data-count="out-count" spellcheck="false" placeholder="编码结果 / 待解码的 Base64"></textarea>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn primary" id="enc">编码 →</button>
+    <button class="btn" id="dec">← 解码</button>
+    <button class="btn" data-copy="out">复制结果</button>
+    <button class="btn" data-swap="in,out">交换</button>
+    <button class="btn" data-clear="in,out">清空</button>
+    <span class="spacer"></span>
+    <div class="seg" id="alphabet">
+      <button data-v="std" class="on">标准</button>
+      <button data-v="url">URL 安全</button>
+    </div>
+  </div>
+
+  <section class="info">
+    <h3>说明</h3>
+    <ul>
+      <li>编码前先用 UTF-8 编码文本，所以中文、emoji 都能正确处理。</li>
+      <li>URL 安全字母表把 <code>+</code> <code>/</code> 换成 <code>-</code> <code>_</code>，方便放进链接里。</li>
+      <li>解码时会自动忽略换行与空格，也能识别 URL 安全字母表，无需手动切换。</li>
+      <li>Base64 是编码不是加密，任何人都能还原，不要用来保护敏感信息。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="../js/common.js"></script>
+<script src="../js/base64.js"></script>
+<script>
+(function () {
+  var inEl = document.getElementById('in');
+  var outEl = document.getElementById('out');
+  var urlsafe = false;
+
+  document.getElementById('alphabet').addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    urlsafe = btn.getAttribute('data-v') === 'url';
+    Array.prototype.forEach.call(this.querySelectorAll('button'), function (b) {
+      b.classList.toggle('on', b === btn);
+    });
+  });
+
+  function doIt(mode) {
+    Toy.hideMsg('msg');
+    var text = mode === 'enc' ? inEl.value : outEl.value;
+    if (!text.trim()) { Toy.showMsg('msg', '请输入内容'); return; }
+    try {
+      var res = mode === 'enc'
+        ? ToyBase64.encodeText(text, urlsafe, false)
+        : ToyBase64.decodeText(text);
+      Toy.setVal(mode === 'enc' ? outEl : inEl, res);
+      Toy.reveal(mode === 'enc' ? outEl : inEl);
+    } catch (e) {
+      Toy.showMsg('msg', e.message);
+    }
+  }
+
+  document.getElementById('enc').addEventListener('click', function () { doIt('enc'); });
+  document.getElementById('dec').addEventListener('click', function () { doIt('dec'); });
+})();
+</script>
+</body>
+</html>
