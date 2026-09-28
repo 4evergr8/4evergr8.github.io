@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IP 信息查询 · 工具箱</title>
+<meta name="description" content="查看当前网络的公网 IP、归属地、运营商，以及 WebRTC 是否会泄漏本地地址。">
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="topline">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    <span>回主页</span>
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="head">
+    <h1>IP 信息查询 <span class="tag-net">需要联网</span></h1>
+    <p>看看你现在对外暴露的公网 IP、大致归属地和运营商，顺带检查一下浏览器有没有通过 WebRTC 泄漏本地地址。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="card">
+    <div class="sub">
+      公网出口
+      <span class="count" id="src">—</span>
+    </div>
+    <dl class="kv">
+      <dt>IP 地址</dt><dd id="ip" class="na">正在获取…</dd>
+      <dt>类型</dt><dd id="type" class="na">—</dd>
+      <dt>归属地</dt><dd id="loc" class="na">—</dd>
+      <dt>运营商</dt><dd id="isp" class="na">—</dd>
+      <dt>ASN</dt><dd id="asn" class="na">—</dd>
+      <dt>时区</dt><dd id="tz" class="na">—</dd>
+      <dt>坐标</dt><dd id="geo" class="na">—</dd>
+    </dl>
+    <div class="toolbar" style="margin-bottom:0;">
+      <button class="btn primary" id="refresh">重新查询</button>
+      <button class="btn" data-copy="copyIp" id="copyIpBtn">复制 IP</button>
+    </div>
+    <input type="hidden" id="copyIp" value="">
+  </div>
+
+  <div class="card">
+    <div class="sub">
+      WebRTC 泄漏检测
+      <span class="count" id="stunSrc">未检测</span>
+    </div>
+    <div id="stunList" class="ip-list">
+      <span class="ip-chip">尚未检测</span>
+    </div>
+    <p style="margin:12px 0 0; font-size:12.5px; color:var(--faint);">
+      通过 STUN 收集 ICE 候选地址。带 <b>srflx</b>（服务器反射）的通常就是你的公网出口；
+      带 <b>host</b> 的是局域网内网地址。如果这里出现了你没走代理的真实地址，就说明存在 WebRTC 泄漏。
+    </p>
+    <div class="toolbar" style="margin-bottom:0;">
+      <button class="btn" id="stun">开始检测</button>
+    </div>
+    <div class="status" id="stunStatus" style="margin-top:10px;"></div>
+  </div>
+
+  <section class="info">
+    <h3>说明</h3>
+    <ul>
+      <li>归属地来自第三方 IP 库，只能定位到城市/区县级，而且经常不准，别拿它当精确位置用。</li>
+      <li>查询会依次尝试 ipwho.is、ip.sb、ipify 三个接口，谁先返回用谁；结果里的「公网出口」就是网站看到的地址。</li>
+      <li>开了代理或 VPN 时，这里显示的是代理节点的地址，不是你本机的。</li>
+      <li>WebRTC 检测只在本机浏览器内部完成，不发送数据；浏览器禁用了 WebRTC 或处在不支持的环境时会拿不到结果。</li>
+      <li>坐标是 IP 库给出的估计值，通常是城市中心，不代表真实位置。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="../js/common.js"></script>
+<script src="../js/ip.js"></script>
+</body>
+</html>
