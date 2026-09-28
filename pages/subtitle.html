@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>字幕转换 · 工具箱</title>
+<meta name="description" content="LRC / SRT / VTT 互转，先把字幕解析成统一结构再输出，支持多文件批量转换。">
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="topline">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    <span>回主页</span>
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="head">
+    <h1>字幕转换</h1>
+    <p>LRC / SRT / VTT 互转。所有格式先解析成统一的「起始时间 · 结束时间 · 文本」结构，再由这个结构生成目标格式，所以任意两种都能互转。可以一次拖入多个文件批量处理。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="card">
+    <div class="sub">
+      字幕文件
+      <span class="count" id="fileCount">未选择</span>
+    </div>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="选择或拖入字幕文件">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V15"/></svg>
+      <span class="big">点击选择字幕文件，或把文件拖到这里</span>
+      <span class="small">支持多选，.lrc / .srt / .vtt 都行，解析全在本地完成</span>
+      <input type="file" id="file" multiple accept=".lrc,.srt,.vtt,.txt,text/*">
+    </div>
+    <div class="file-list" id="fileList"></div>
+  </div>
+
+  <div class="card">
+    <div class="sub">或直接粘贴字幕文本</div>
+    <div class="pane">
+      <div class="pane-head"><span class="title">原文</span><span class="count" id="in-count">0 字</span></div>
+      <textarea id="in" class="editor" data-count="in-count" spellcheck="false" placeholder="把 .lrc / .srt / .vtt 的内容粘贴到这里。有文件时优先处理文件。"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sub">转换设置</div>
+    <div class="toolbar" style="margin:0 0 14px;">
+      <span class="field-label">目标格式</span>
+      <div class="seg" id="target">
+        <button data-v="lrc" class="on">LRC</button>
+        <button data-v="srt">SRT</button>
+        <button data-v="vtt">VTT</button>
+      </div>
+      <span class="field-label">源格式</span>
+      <div class="seg" id="source">
+        <button data-v="auto" class="on">自动</button>
+        <button data-v="lrc">LRC</button>
+        <button data-v="srt">SRT</button>
+        <button data-v="vtt">VTT</button>
+      </div>
+      <span class="field-label">LRC 结束空行</span>
+      <div class="seg" id="endblank">
+        <button data-v="1" class="on">写入</button>
+        <button data-v="0">不写</button>
+      </div>
+    </div>
+    <div class="toolbar" style="margin:0;">
+      <button class="btn primary" id="run">转换</button>
+      <button class="btn" id="clear">清空</button>
+    </div>
+  </div>
+
+  <div id="results" style="margin-top:14px;"></div>
+
+  <section class="info">
+    <h3>说明</h3>
+    <ul>
+      <li>中间结构是一组 <code>{ start, end, text }</code>，SRT 和 VTT 自带结束时间，LRC 只有起始时间。</li>
+      <li><b>转成 LRC 时</b>会在每条的结束时间点写一行空的时间戳（<code>[01:23.45]</code> 后面没有文字），播放器才知道该收起上一行。不需要的话把「LRC 结束空行」切成「不写」。</li>
+      <li><b>从 LRC 转出时</b>会先检查原文件带不带空行条目：带的话用空行时间戳作为结束时间（准确）；不带则以下一行的起始时间推断，最后一行按 3 秒计，这种情况结果里会给出提示。</li>
+      <li>SRT / VTT 里的一行多行文本，转成 LRC 时会被合并成一行（LRC 一行只能放一个时间戳）。</li>
+      <li>文件按 UTF-8 读取，解码失败时自动退回 GBK，结果里会标明实际用的编码。</li>
+      <li>VTT 的说话人标记 <code>&lt;v 名字&gt;</code> 和行内时间戳会被清掉，其余内容原样保留。</li>
+      <li>上传的多个文件逐个转换，每条结果都可以单独复制或下载，文件不会离开你的浏览器。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="../js/common.js"></script>
+<script src="../js/subtitle.js"></script>
+</body>
+</html>
