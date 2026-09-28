@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>佛曰加解密 · 工具箱</title>
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="topline">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    <span>回主页</span>
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="head">
+    <h1>佛曰加解密</h1>
+    <p>与佛论禅 V1：明文经 UTF-16LE → AES-256-CBC → 咒字映射，得到「佛曰：……」。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="io">
+    <div class="pane">
+      <div class="pane-head"><span class="title">原文</span><span class="count" id="in-count">0 字</span></div>
+      <textarea id="in" class="editor" data-count="in-count" spellcheck="false" placeholder="在这里输入要加密的文字"></textarea>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span class="title">佛语</span><span class="count" id="out-count">0 字</span></div>
+      <textarea id="out" class="editor" data-count="out-count" spellcheck="false" placeholder="「佛曰：……」会出现在这里，也可以直接粘贴进来解密"></textarea>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn primary" id="enc">加密 →</button>
+    <button class="btn" id="dec">← 解密</button>
+    <button class="btn" data-copy="out">复制结果</button>
+    <button class="btn" data-swap="in,out">交换</button>
+    <button class="btn" id="demo">填个示例</button>
+    <button class="btn" data-clear="in,out">清空</button>
+  </div>
+
+  <section class="info">
+    <h3>说明</h3>
+    <ul>
+      <li>支持的是 <b>V1「佛曰」</b>。流程：明文 → UTF-16LE 字节 → PKCS#7 补位 → AES-256-CBC（固定密钥）→ 逐字节映射成咒字。</li>
+      <li>字节 ≥ 128 时会额外插入一个转义字（冥/奢/梵/呐…），所以密文长度不固定，同样的明文每次加密结果都可能不同。</li>
+      <li>解密时会自动忽略「佛曰：」前缀、空格和换行，直接粘贴整段即可。</li>
+      <li><b>V2「如是我闻」</b>在 AES 之外还套了一层 7z(LZMA) 压缩，浏览器端没有合适的实现，本工具暂不支持，粘贴进来会给出提示。</li>
+      <li>密文经过百度等会把繁体转简体的渠道后无法还原 —— 咒字表里繁简都有，一旦被转换密钥就对不上了。</li>
+      <li>密钥是固定的公开值，这只是一个编码玩具，不具备保密性。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="../js/common.js"></script>
+<script src="../js/aes.js"></script>
+<script src="../js/foyue.js"></script>
+<script>
+(function () {
+  var inEl = document.getElementById('in');
+  var outEl = document.getElementById('out');
+  var FO = Array.from(ToyFoYue.FO_YUE);
+  var BM = Array.from(ToyFoYue.BYTE_MARK);
+
+  function looksFo(s) {
+    var t = String(s).replace(/[\s\u3000\r\n]+/g, '').replace(/^(佛曰|如是我闻)[:：]?/, '');
+    if (!t) return false;
+    return Array.from(t).every(function (c) { return FO.indexOf(c) >= 0 || BM.indexOf(c) >= 0; });
+  }
+
+  function doIt(mode) {
+    Toy.hideMsg('msg');
+    var src, dst;
+    if (mode === 'enc') {
+      src = inEl; dst = outEl;
+    } else if (looksFo(outEl.value)) {
+      src = outEl; dst = inEl;
+    } else if (looksFo(inEl.value)) {
+      src = inEl; dst = outEl;
+    } else {
+      src = inEl.value.trim() ? inEl : outEl;
+      dst = src === inEl ? outEl : inEl;
+    }
+    if (!src.value.trim()) { Toy.showMsg('msg', '请输入内容'); return; }
+    try {
+      var res = mode === 'enc'
+        ? ToyFoYue.encode(src.value)
+        : ToyFoYue.decode(src.value);
+      Toy.setVal(dst, res);
+      Toy.reveal(dst);
+    } catch (e) {
+      Toy.showMsg('msg', e.message);
+    }
+  }
+
+  document.getElementById('enc').addEventListener('click', function () { doIt('enc'); });
+  document.getElementById('dec').addEventListener('click', function () { doIt('dec'); });
+  document.getElementById('demo').addEventListener('click', function () {
+    Toy.setVal(inEl, '南无阿弥陀佛，这是一段测试文字。');
+    doIt('enc');
+  });
+})();
+</script>
+</body>
+</html>
