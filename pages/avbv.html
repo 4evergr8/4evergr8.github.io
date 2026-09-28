@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AV / BV 互转 · 工具箱</title>
+<meta name="theme-color" content="#fb7299">
+<link rel="stylesheet" href="../css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('toy-theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<div class="topline">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    <span>回主页</span>
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="head">
+    <h1>AV / BV 互转</h1>
+    <p>输入 av 号得到 BV 号，输入 BV 号得到 av 号，自动识别方向。每行一个，可批量。</p>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="io">
+    <div class="pane">
+      <div class="pane-head"><span class="title">输入</span><span class="count" id="in-count">0 字</span></div>
+      <textarea id="in" class="editor" data-count="in-count" spellcheck="false" placeholder="av170001&#10;或 170001&#10;或 BV17x411w7KC&#10;（每行一个）"></textarea>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span class="title">输出</span><span class="count" id="out-count">0 字</span></div>
+      <textarea id="out" class="editor" data-count="out-count" spellcheck="false" placeholder="转换结果会出现在这里"></textarea>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn primary" id="run">转换</button>
+    <button class="btn" data-copy="out">复制结果</button>
+    <button class="btn" data-swap="in,out">交换</button>
+    <button class="btn" id="demo">填个示例</button>
+    <button class="btn" data-clear="in,out">清空</button>
+  </div>
+
+  <section class="info">
+    <h3>这是什么</h3>
+    <ul>
+      <li>B 站 2020 年 3 月起用 <code>BV</code> 号替代 <code>av</code> 号，两者一一对应，可无损互转。</li>
+      <li>算法本质：av 号与固定值异或后，按 58 进制映射到一张乱序字母表，再交换其中两位得到 12 位 BV 号。</li>
+      <li>本页常量已与线上真实稿件的 <code>aid</code> / <code>bvid</code> 对拍校验，转换结果可靠。</li>
+      <li>BV 号大小写敏感，复制时请保持原样。</li>
+    </ul>
+  </section>
+</main>
+
+<script src="../js/common.js"></script>
+<script src="../js/avbv.js"></script>
+<script>
+(function () {
+  var inEl = document.getElementById('in');
+  var outEl = document.getElementById('out');
+
+  function run(doReveal) {
+    Toy.hideMsg('msg');
+    var lines = inEl.value.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length; });
+    if (!lines.length) { Toy.setVal(outEl, ''); return; }
+
+    var out = [], errs = [];
+    lines.forEach(function (line, i) {
+      try {
+        out.push(ToyAVBV.convert(line).output);
+      } catch (e) {
+        errs.push('第 ' + (i + 1) + ' 行：' + e.message);
+      }
+    });
+    Toy.setVal(outEl, out.join('\n'));
+    if (errs.length) Toy.showMsg('msg', errs.join('　'));
+    if (doReveal && out.length) Toy.reveal(outEl);
+  }
+
+  document.getElementById('run').addEventListener('click', function () { run(true); });
+  document.getElementById('demo').addEventListener('click', function () {
+    Toy.setVal(inEl, 'av170001\n170001\nBV17x411w7KC');
+    run(true);
+  });
+
+  // 边输入边转换，但不在此时滚动页面
+  var timer = null;
+  inEl.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () { run(false); }, 180);
+  });
+})();
+</script>
+</body>
+</html>
